@@ -1,18 +1,12 @@
 package com.example;
 
-public class Book implements Item {
-    
-    public String author;
-    public String ISBN;
+public class Book extends Item {
+    private String author;
+    private String ISBN;
 
-    @Override
-    public void checkOut() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'checkOut'");
-    }
-    @Override
-    public void returnItem() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'returnItem'");
+    public Book(int itemID, String title, int copiesAvailable, boolean canBePurchased, String author, String ISBN) {
+        super(itemID, title, copiesAvailable, canBePurchased);
+        this.author = author;
+        this.ISBN = ISBN;
     }
 }

@@ -1,17 +1,14 @@
 package com.example;
 
-public class Magazine implements Item {
-    public String issue;
+public class Magazine extends Item {
+    private String issue;
 
-    @Override
-    public void checkOut() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'checkOut'");
+    public Magazine(int itemID, String title, int copiesAvailable, boolean canBePurchased, String issue) {
+        super(itemID, title, copiesAvailable, canBePurchased);
+        this.issue = issue;
     }
 
-    @Override
-    public void returnItem() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'returnItem'");
+    public String getIssue() {
+        return this.issue;
     }
 }

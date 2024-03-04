@@ -1,17 +1,16 @@
 package com.example;
 
-public class CD implements Item {
+public class CD extends Item {
+    // Assuming CDs have some unique properties
+    private String artist;
 
-    @Override
-    public void checkOut() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'checkOut'");
+    public CD(int itemID, String title, int copiesAvailable, boolean canBePurchased, String artist) {
+        super(itemID, title, copiesAvailable, canBePurchased);
+        this.artist = artist;
     }
 
-    @Override
-    public void returnItem() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'returnItem'");
+    public String getArtist() {
+        return this.artist;
     }
 
 }
