@@ -1,0 +1,8 @@
+Title,CopiesAvailable,Artist/Author,CanBePurchased,ItemType,Price,ISBN,Edition,CourseID,Issue
+Introduction to Algorithms,15,Thomas H. Cormen,true,TEXTBOOK,80.99,3rd,0,0,
+Principles of Compiler Design,14,Alfred V. Aho,true,TEXTBOOK,65.99,5th,0,0,
+Greatest Hits,10,Bob,true,CD,15.99,,,0,
+National Geographic,12,David,true,MAGAZINE,5.99,,,0,10
+Scientific American,15,Jeffrey,true,MAGAZINE,6.99,,,0,4
+The Great Gatsby,8,Tom,true,BOOK,9.99,9780743273565,,0,
+To Kill a Mockingbird,7,Cat,true,BOOK,7.99,9780061120084,,0,
