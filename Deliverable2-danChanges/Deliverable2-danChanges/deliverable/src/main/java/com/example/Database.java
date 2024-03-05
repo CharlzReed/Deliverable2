@@ -27,16 +27,13 @@ public class Database {
     protected static ArrayList<NonFaculty> nonFacultyDatabase = new ArrayList<>();
     protected static ArrayList<SystemAdmin> adminDatabase = new ArrayList<>();
 
-    public static String fileLocation = "Deliverable2-danChanges\\deliverable\\src\\main\\java\\com\\example\\";
-
-
+    public static String fileLocation = "Deliverable2-danChanges\\Deliverable2-danChanges\\deliverable\\src\\main\\java\\com\\example\\";
 
     public static void readData() {
         readItems();
         readUsers();
     }
-    
-    
+
     private static void readItems() {
         String line = "";
         String splitBy = ",";
@@ -47,13 +44,13 @@ public class Database {
             boolean header = true;
             while ((line = br.readLine()) != null) { // Reads each line
                 String[] item = line.split(splitBy); // Use comma as separator
-                
+
                 // To skip the header
                 if (header) {
                     header = false;
                     continue;
                 }
-                
+
                 // Parsing and adding items based on type
                 String title = item[0];
                 int copiesAvailable = Integer.parseInt(item[1]);
@@ -66,83 +63,84 @@ public class Database {
                 String edition = item[7];
                 int courseID = Integer.parseInt(item[8]);
                 String issue = "";
-                try {issue = item[9];} catch (Exception e) {} // To avoid getting an index out of bounds error when indexing 9
-                
-                // Title            (0)
-                // CopiesAvailable  (1)
-                // Artist/Author    (2)
-                // CanBePurchased   (3)
-                // ItemType         (4)
-                // Price            (5)
-                // ISBN             (6)
-                // Edition          (7)
-                // CourseID         (8)
-                // Issue            (9)
-                
+                try {
+                    issue = item[9];
+                } catch (Exception e) {
+                } // To avoid getting an index out of bounds error when indexing 9
+
+                // Title (0)
+                // CopiesAvailable (1)
+                // Artist/Author (2)
+                // CanBePurchased (3)
+                // ItemType (4)
+                // Price (5)
+                // ISBN (6)
+                // Edition (7)
+                // CourseID (8)
+                // Issue (9)
+
                 switch (itemType) {
                     case "TEXTBOOK":
                         Textbook textbook = new Textbook(
-                            title, 
-                            copiesAvailable, 
-                            author, 
-                            canBePurchased, 
-                            courseID, 
-                            ISBN, 
-                            edition, 
-                            ItemType.TEXTBOOK, 
-                            price);
+                                title,
+                                copiesAvailable,
+                                author,
+                                canBePurchased,
+                                courseID,
+                                ISBN,
+                                edition,
+                                ItemType.TEXTBOOK,
+                                price);
                         textBookDatabase.add(textbook);
                         // itemDatabase.add(textbook);
                         break;
-                        
+
                     case "CD":
                         CD cd = new CD(
-                            title, 
-                            copiesAvailable, 
-                            canBePurchased, 
-                            artist, 
-                            ItemType.CD, 
-                            price);
+                                title,
+                                copiesAvailable,
+                                canBePurchased,
+                                artist,
+                                ItemType.CD,
+                                price);
                         cdDatabase.add(cd);
-                            // itemDatabase.add(cd);
+                        // itemDatabase.add(cd);
                         break;
-                        
+
                     case "MAGAZINE":
                         Magazine magazine = new Magazine(
-                            title, 
-                            copiesAvailable, 
-                            author, 
-                            canBePurchased, 
-                            issue, 
-                            ItemType.MAGAZINE, 
-                            price);
+                                title,
+                                copiesAvailable,
+                                author,
+                                canBePurchased,
+                                issue,
+                                ItemType.MAGAZINE,
+                                price);
                         magazineDatabase.add(magazine);
-                            // itemDatabase.add(magazine);
+                        // itemDatabase.add(magazine);
                         break;
-                            
+
                     case "BOOK":
                         Book book = new Book(
-                            title, 
-                            copiesAvailable, 
-                            canBePurchased, 
-                            author, 
-                            ISBN, 
-                            ItemType.BOOK, 
-                            price);
+                                title,
+                                copiesAvailable,
+                                canBePurchased,
+                                author,
+                                ISBN,
+                                ItemType.BOOK,
+                                price);
                         bookDatabase.add(book);
-                            // itemDatabase.add(book);
+                        // itemDatabase.add(book);
                         break;
                 }
             }
-                        
+
             br.close();
-                        
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     public static void readUsers() {
         String line = "";
@@ -154,88 +152,87 @@ public class Database {
             boolean header = true;
             while ((line = br.readLine()) != null) { // Reads each line
                 String[] item = line.split(splitBy); // Use comma as separator
-                
+
                 // To skip the header
                 if (header) {
                     header = false;
                     continue;
                 }
-                
-                // Parsing and adding items based on type
+
+                // Parsing and adding users based on type
                 int userID = Integer.parseInt(item[0]);
                 String userName = item[1];
                 String email = item[2];
                 String userType = item[3];
                 boolean isVerified = Boolean.parseBoolean(item[4]);
-                
-                // userID      (0)
-                // userName    (1)
-                // email       (2)
-                // userType    (3)
-                // isVerified  (4)
+                int studentID = item[5].isEmpty() ? 0 : Integer.parseInt(item[5]); // Check if studentID is empty
+                String password = item[7];
 
                 switch (userType) {
                     case "STUDENT":
                         Student student = new Student(
-                            userID, 
-                            userName, 
-                            email, 
-                            UserType.STUDENT, 
-                            isVerified, 
-                            userID);
+                                userID,
+                                userName,
+                                email,
+                                UserType.STUDENT,
+                                isVerified,
+                                studentID);
+                        student.setPassword(password);
                         studentDatabase.add(student);
                         break;
 
                     case "FACULTY":
                         Faculty faculty = new Faculty(
-                            userID, 
-                            userName, 
-                            email, 
-                            UserType.FACULTY, 
-                            isVerified);
+                                userID,
+                                userName,
+                                email,
+                                UserType.FACULTY,
+                                isVerified);
+                        faculty.setPassword(password);
                         facultyDatabase.add(faculty);
                         break;
-                        
+
                     case "NON-FACULTY":
                         NonFaculty nonFaculty = new NonFaculty(
-                            userID, 
-                            userName, 
-                            email, 
-                            UserType.NON_FACULTY, 
-                            isVerified);
+                                userID,
+                                userName,
+                                email,
+                                UserType.NON_FACULTY,
+                                isVerified);
+                        nonFaculty.setPassword(password);
                         nonFacultyDatabase.add(nonFaculty);
                         break;
-                        
+
                     case "VISITOR":
                         Visitor visitor = new Visitor(
-                            userID, 
-                            userName, 
-                            email, 
-                            UserType.VISITOR, 
-                            isVerified);
+                                userID,
+                                userName,
+                                email,
+                                UserType.VISITOR,
+                                isVerified);
+                        visitor.setPassword(password);
                         visitorDatabase.add(visitor);
                         break;
-                        
+
                     case "ADMIN":
                         SystemAdmin admin = new SystemAdmin(
-                            userID, 
-                            userName, 
-                            email, 
-                            UserType.ADMIN, 
-                            isVerified);
+                                userID,
+                                userName,
+                                email,
+                                UserType.ADMIN,
+                                isVerified);
+                        admin.setPassword(password);
                         adminDatabase.add(admin);
                         break;
                 }
             }
-                        
+
             br.close();
-                        
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     public static void writeItemData() {
         try {
@@ -245,47 +242,54 @@ public class Database {
             bw.write("Title,CopiesAvailable,Artist/Author,CanBePurchased,ItemType,Price,ISBN,Edition,CourseID,Issue\n");
 
             // Write Textbook entries
-            for (Textbook t : textBookDatabase) bw.write(t.toStringCSV() + "\n");
+            for (Textbook t : textBookDatabase)
+                bw.write(t.toStringCSV() + "\n");
 
             // Write CD entries
-            for (CD cd : cdDatabase) bw.write(cd.toStringCSV() + "\n");
-            
+            for (CD cd : cdDatabase)
+                bw.write(cd.toStringCSV() + "\n");
+
             // Write Magazine entries
-            for (Magazine m : magazineDatabase) bw.write(m.toStringCSV() + "\n");
+            for (Magazine m : magazineDatabase)
+                bw.write(m.toStringCSV() + "\n");
 
             // Write Book entries
-            for (Book b : bookDatabase) bw.write(b.toStringCSV() + "\n");
+            for (Book b : bookDatabase)
+                bw.write(b.toStringCSV() + "\n");
 
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-
 
     public static void writeUserData() {
         try {
-            fileLocation = "Deliverable2-danChanges\\deliverable\\src\\main\\java\\com\\example\\users.csv";
+            fileLocation = "Deliverable2-danChanges\\Deliverable2-danChanges\\deliverable\\src\\main\\java\\com\\example\\users.csv";
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileLocation));
 
             // Write headers
             bw.write("userID,userName,email,userType,isVerified\n");
-            
+
             // Write Student entries
-            for (Student s : studentDatabase) bw.write(s.toStringCSV() + "\n");
-            
+            for (Student s : studentDatabase)
+                bw.write(s.toStringCSV() + "\n");
+
             // Write Faculty entries
-            for (Faculty f : facultyDatabase) bw.write(f.toStringCSV() + "\n");
-            
+            for (Faculty f : facultyDatabase)
+                bw.write(f.toStringCSV() + "\n");
+
             // Write NonFaculty entries
-            for (NonFaculty nf : nonFacultyDatabase) bw.write(nf.toStringCSV() + "\n");
+            for (NonFaculty nf : nonFacultyDatabase)
+                bw.write(nf.toStringCSV() + "\n");
 
             // Write Visitor entries
-            for (Visitor v : visitorDatabase) bw.write(v.toStringCSV() + "\n");
-            
+            for (Visitor v : visitorDatabase)
+                bw.write(v.toStringCSV() + "\n");
+
             // Write SystemAdmin entries
-            for (SystemAdmin a : adminDatabase) bw.write(a.toStringCSV() + "\n");
+            for (SystemAdmin a : adminDatabase)
+                bw.write(a.toStringCSV() + "\n");
 
             bw.close();
         } catch (IOException e) {
@@ -293,8 +297,7 @@ public class Database {
         }
     }
 
-
-//////////////////////////////  TESTING  //////////////////////////////
+    ////////////////////////////// TESTING //////////////////////////////
     public static void main(String[] args) {
         readData();
 
@@ -311,10 +314,10 @@ public class Database {
         for (Book t : bookDatabase) {
             System.out.println(t.toStringCSV());
         }
-        
+
         for (Textbook t : textBookDatabase) {
             t.setCopiesAvailable(t.getCopiesAvailable() + 1);
-        }  
+        }
         writeItemData();
 
         // TESTING USERS
@@ -334,7 +337,7 @@ public class Database {
         for (SystemAdmin t : adminDatabase) {
             System.out.println(t.toStringCSV());
         }
-        
+
         for (Visitor t : visitorDatabase) {
             // Flip the bool value of the VISITORS's verification
             t.setVerification(!t.isVerified());

@@ -1,0 +1,11 @@
+title,copiesAvailable,canBePurchased,courseID,ISBN,edition,price
+Introduction to Algorithms,5,True,101,1126027378409,3rd,89.99
+Principles of Compiler Design,3,False,102,3386116197876,2nd,59.99
+Operating System Concepts,4,True,103,2902956549454,10th,99.99
+Database System Concepts,2,True,104,8461818421753,6th,70.0
+Computer Networks,6,False,105,3321209007706,5th,85.5
+Modern Operating Systems,4,True,106,8870116669221,4th,75.99
+Digital Image Processing,3,True,107,1103585363394,4th,80.99
+Artificial Intelligence: A Modern Approach,7,True,108,2527987909791,3rd,100.0
+The C Programming Language,8,False,109,8641815723599,2nd,50.0
+Data Structures and Algorithm Analysis in C,5,True,110,1419950270820,4th,65.0

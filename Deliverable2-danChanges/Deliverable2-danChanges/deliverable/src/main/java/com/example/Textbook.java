@@ -13,7 +13,7 @@ public class Textbook extends Book {
         super(title, copiesAvailable, canBePurchased, author, ISBN, ItemType.TEXTBOOK, price);
         this.courseID = courseID;
         this.edition = edition;
-        this.textbookRequests = new ArrayList<>();
+        this.textbookRequests= new ArrayList<>();
     }
 
     public boolean checkAvailability(Textbook tb) {
@@ -28,6 +28,10 @@ public class Textbook extends Book {
 
     public int getCourseID() {
         return this.courseID;
+    }
+    
+    public void addTextbookRequest(TextbookRequest t){
+        this.textbookRequests.add(t);
     }
 
     // Setters

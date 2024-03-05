@@ -6,10 +6,13 @@ userID,userName,email,userType,isVerified
 15,User15,user15@example.com,STUDENT,true
 18,User18,user18@example.com,STUDENT,true
 19,User19,user19@example.com,STUDENT,true
+3,Alex Johnson,alex.johnson@student.com,STUDENT,true
 1,User1,user1@example.com,FACULTY,false
 12,User12,user12@example.com,FACULTY,false
 20,User20,user20@example.com,FACULTY,true
-5,User5,user5@example.com,VISITOR,true
+1,John Doe,john.doe@example.com,FACULTY,true
+5,User5,user5@example.com,VISITOR,false
+2,Jane Smith,jane.smith@visitors.com,VISITOR,true
 2,User2,user2@example.com,ADMIN,false
 3,User3,user3@example.com,ADMIN,false
 4,User4,user4@example.com,ADMIN,true
