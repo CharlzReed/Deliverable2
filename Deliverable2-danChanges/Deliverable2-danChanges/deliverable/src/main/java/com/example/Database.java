@@ -66,7 +66,7 @@ public class Database {
                 String edition = item[7];
                 int courseID = Integer.parseInt(item[8]);
                 String issue = "";
-                try {issue = item[9];} catch (Exception e) {}
+                try {issue = item[9];} catch (Exception e) {} // To avoid getting an index out of bounds error when indexing 9
                 
                 // Title            (0)
                 // CopiesAvailable  (1)
