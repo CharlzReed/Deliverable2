@@ -1,17 +1,25 @@
 package com.example;
 
 public abstract class Item {
+    protected static int nextID = 1;
     protected int itemID;
+    protected double price;
     protected String title;
+    protected ItemType itemType;
     protected int copiesAvailable;
     protected boolean canBePurchased;
 
-    public Item(int itemID, String title, int copiesAvailable, boolean canBePurchased) {
-        this.itemID = itemID;
+    public Item(String title, int copiesAvailable, boolean canBePurchased, ItemType itemType, double price) {
+        int newID = nextID++;
+        this.itemID = newID;
         this.title = title;
         this.copiesAvailable = copiesAvailable;
         this.canBePurchased = canBePurchased;
+        this.itemType = itemType;
+        this.price = price;
     }
+
+    public abstract String toStringCSV();
 
     public void checkOut() {
         if (canBePurchased & copiesAvailable > 0) {
@@ -27,7 +35,7 @@ public abstract class Item {
     }
 
     public int getItemID() {
-        return itemID;
+        return this.itemID;
     }
 
     public String getTitle() {
@@ -43,10 +51,6 @@ public abstract class Item {
     }
 
     // Setters need to specify permissions
-    protected void setItemID(int itemID) {
-        this.itemID = itemID;
-    }
-
     protected void setTitle(String title) {
         this.title = title;
     }
@@ -60,4 +64,3 @@ public abstract class Item {
     }
 
 }
-

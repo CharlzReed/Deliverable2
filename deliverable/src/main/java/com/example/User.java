@@ -10,6 +10,7 @@ public abstract class User {
     private String password;
     private UserType userType;
     private boolean isVerified;
+    private Payment payMethod;
 
     // this is just here to act as the database
     private static Map<String, String> userDatabase = new HashMap<>();
