@@ -103,7 +103,7 @@ public class Database {
                             artist, 
                             ItemType.CD, 
                             price);
-                            cdDatabase.add(cd);
+                        cdDatabase.add(cd);
                             // itemDatabase.add(cd);
                         break;
                         
@@ -116,7 +116,7 @@ public class Database {
                             issue, 
                             ItemType.MAGAZINE, 
                             price);
-                            magazineDatabase.add(magazine);
+                        magazineDatabase.add(magazine);
                             // itemDatabase.add(magazine);
                         break;
                             
@@ -129,7 +129,7 @@ public class Database {
                             ISBN, 
                             ItemType.BOOK, 
                             price);
-                            bookDatabase.add(book);
+                        bookDatabase.add(book);
                             // itemDatabase.add(book);
                         break;
                 }
