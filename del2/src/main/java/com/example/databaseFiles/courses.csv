@@ -1,4 +1,4 @@
-courseID,courseName,courseCode,startDate,endDate,textbookID
+courseID,courseName,courseCode,startDate,endDate
 3000,Introduction to Computer Science,CS101,2024-03-01,2024-05-15
 3001,Introduction to kinesiology,CS201,2024-03-15,2024-06-30
 3002,History of the First World War,CS401,2024-04-01,2024-07-15
