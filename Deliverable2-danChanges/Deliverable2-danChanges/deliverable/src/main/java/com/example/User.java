@@ -12,6 +12,7 @@ public abstract class User {
     private String password;
     private UserType userType;
     private boolean isVerified;
+    private ArrayList<Subscription> subscriptions;
 
     public User(int userID, String userName, String email, UserType userType, boolean isVerified) {
         this.userID = userID;
@@ -19,6 +20,7 @@ public abstract class User {
         this.userType = userType;
         this.email = email;
         this.isVerified = isVerified;
+        this.subscriptions = new ArrayList<>();
     }
 
     public String toStringCSV() {
@@ -148,6 +150,27 @@ public abstract class User {
 
     protected void setPassword(String newPassword){
         this.password = newPassword;
+    }
+
+    protected void addSubscription(Subscription sub){
+        this.subscriptions.add(sub);
+    }
+
+    protected void removeSubscription(Subscription sub){
+        this.subscriptions.remove(sub);
+    }
+
+    protected List<Subscription> getSubscriptions(){
+        return this.subscriptions;
+    }
+
+    protected boolean findSub(Subscription sub){
+        for(Subscription s : subscriptions){
+            if(s.equals(sub)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
