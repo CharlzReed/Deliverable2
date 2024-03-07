@@ -36,7 +36,7 @@ public class CSVReader {
             header = "userID,name,email,password,userType,accountBalance";
             writeObjectArrayToFile("users.csv", header, Library.users);
             
-            header = "courseID,courseName,courseCode,startDate,endDate,textbookID";
+            header = "courseID,courseName,courseCode,startDate,endDate";
             writeObjectArrayToFile("courses.csv", header, Library.courses);
             
             String header1 = "userID,itemID";
