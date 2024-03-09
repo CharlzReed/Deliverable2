@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,8 +11,9 @@ import java.util.ArrayList;
 
 public class CSVReader {
 
-    public static String fileLocation = "del2\\src\\main\\java\\com\\example\\databaseFiles\\";
-
+public static String fileLocation = "del2" + File.separator + "src" + File.separator + "main" + File.separator + 
+                                    "java" + File.separator + "com" + File.separator + "example" + File.separator + 
+                                    "databaseFiles" + File.separator;
     public static void readALL() {
         try {
             readUsers();
