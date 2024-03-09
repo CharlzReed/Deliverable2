@@ -1,17 +1,7 @@
 package com.example;
 
-public class Visitor implements User {
-
-    @Override
-    public void login() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
+public class Visitor extends User {
+    public Visitor(int userID, String userName, String email, UserType userType, boolean isVerified, double accountBalance) {
+        super(userID, userName, email, UserType.VISITOR, isVerified, accountBalance);
     }
-
-    @Override
-    public void register() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'register'");
-    }
-
 }

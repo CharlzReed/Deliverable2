@@ -2,21 +2,38 @@ package com.example;
 
 import java.util.List;
 
-public class Faculty implements User {
+import java.util.ArrayList;
 
-    public List<String> courses;
+public class Faculty extends User {
+    private List<Course> courses;
 
-    
-    @Override
-    public void login() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
+    public Faculty(int userID, String userName, String email, UserType userType, boolean isVerified, double accountBalance) {
+        super(userID, userName, email, UserType.FACULTY, isVerified, accountBalance);
+        this.courses = new ArrayList<>();
     }
 
-    @Override
-    public void register() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'register'");
+    public Course getCourse(Course course) {
+        for (Course c : courses) {
+            if (c.equals(course)) {
+                return c;
+            }
+        }
+        return null;
     }
 
+    public List<Textbook> getCourseTextbooks() {
+        List<Textbook> textbooks = new ArrayList<>();
+        for (Course c : courses) {
+            textbooks.addAll(c.getTextbooks());
+        }
+        return textbooks;
+    }
+
+    public void notifyNewEdition(Textbook textbook) {
+        // notify user somehow
+    }
+
+    public void updateCourseTextbook(Course course, Textbook newEdition) {
+        // update specified course textbook
+    }
 }

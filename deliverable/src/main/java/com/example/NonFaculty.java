@@ -1,17 +1,7 @@
 package com.example;
 
-public class NonFaculty implements User {
-
-    @Override
-    public void login() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
+public class NonFaculty extends User {
+    public NonFaculty(int userID, String userName, String email, UserType userType, boolean isVerified, double accountBalance) {
+        super(userID, userName, email, UserType.NON_FACULTY, isVerified, accountBalance);
     }
-
-    @Override
-    public void register() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'register'");
-    }
-
 }

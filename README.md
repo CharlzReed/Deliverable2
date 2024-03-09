@@ -1,5 +1,3 @@
 # Deliverable2
 
-This is the back end section of the project.
-
-Use maven to manage the files.
+This is a _**slightly downsized**_ version of the current project that is **100% functional**. 
