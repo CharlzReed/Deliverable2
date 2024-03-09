@@ -1,0 +1,17 @@
+userID,userName,email,userType,isVerified,accountBalance
+6,jeff,user6@example.com,STUDENT,false,100.0
+8,User8,user8@example.com,STUDENT,true,100.0
+10,User10,user10@example.com,STUDENT,false,100.0
+13,User13,user13@example.com,STUDENT,true,100.0
+15,User15,user15@example.com,STUDENT,true,100.0
+18,User18,user18@example.com,STUDENT,true,100.0
+19,User19,user19@example.com,STUDENT,true,100.0
+1,User1,user1@example.com,FACULTY,false,100.0
+12,User12,user12@example.com,FACULTY,false,100.0
+20,User20,user20@example.com,FACULTY,true,100.0
+5,User5,user5@example.com,VISITOR,true,100.0
+2,User2,user2@example.com,ADMIN,false,100.0
+3,User3,user3@example.com,ADMIN,false,100.0
+4,User4,user4@example.com,ADMIN,true,100.0
+9,User9,user9@example.com,ADMIN,true,100.0
+17,User17,user17@example.com,ADMIN,true,100.0
