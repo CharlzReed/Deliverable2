@@ -31,7 +31,7 @@ class User {
     }
 
 
-    // for adding items WITHOUT logging date
+    // for adding items WITHOUT logging date. Used only when reconstructing the objects.
     public boolean addItem(Item item) {
 
         if (threeOverDue()) return false;
@@ -54,15 +54,13 @@ class User {
         }
         
         rentedItems.add(item);
-        rentLog.put(item, LocalDate.now());
         if (item.itemType != ItemType.SUBSCRIPTION) {
             Library.copiesAvailable.put(item, Library.copiesAvailable.get(item)-1);
         }
-        this.accountBalance -= item.cost;
         return true;
     }
     
-    // for adding items WITH logging date
+    // for adding items WITH logging date. Used when renting new item.
     public boolean rentItem(Item item) {
 
         if (threeOverDue()) return false;
@@ -105,14 +103,13 @@ class User {
 
 
     public void addCourse(Course course) {
-        if (this.userType == UserType.FACULTY) {
-            LocalDate currentDate = LocalDate.now();
-            if (currentDate.isAfter(course.startDate) && currentDate.isBefore(course.endDate)) {
-                courses.add(course);
-                // System.out.println("Course added successfully.");
-            } else {
-                System.out.println("Cannot add course. Current date is not between the start and end dates of the course.");
-            }
+        LocalDate currentDate = LocalDate.now();
+        if (currentDate.isAfter(course.startDate) && currentDate.isBefore(course.endDate)) {
+            courses.add(course);
+            // System.out.println("Course added successfully.");
+        } else {
+            System.out.println("Cannot add course. Current date is not between the start and end dates of the course.");
+            returnItem(Library.course2textbook.get(course)); // Remove the textbook from the rented items since the course is over
         }
     }
 
@@ -146,7 +143,7 @@ class User {
     
     
     private double calcOverDueCharge4all(Item item) {
-        return daysOverdue(item) * 0.5;
+        return ((double)daysOverdue(item)) * 0.5;
     }
 
 
