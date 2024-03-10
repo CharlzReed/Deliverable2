@@ -12,7 +12,7 @@ public class Launcher {
 			// email: temp@yorku.ca
 			// password: 123
 			public void run() {
-				MainMenu main = new MainMenu();
+				MainWindow main = new MainWindow();
 			}
 		});
 	}
