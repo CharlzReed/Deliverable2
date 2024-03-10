@@ -8,9 +8,11 @@ public class Launcher {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			//This code launches the program.
+			//if u wanna test these changes click login and then type the following:
+			// email: temp@yorku.ca
+			// password: 123
 			public void run() {
-				MainWindow main = new MainWindow();
-				MainMenu open = new MainMenu();
+				MainMenu main = new MainMenu();
 			}
 		});
 	}

@@ -1,139 +1,161 @@
 package EECS3311Deliverable2.D2;
+
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 public class MainMenu {
-	
+
 	private JFrame window;
-	
+	private CardLayout cardLayout = new CardLayout();
+	private JPanel cardPanel = new JPanel(cardLayout);
+	private String userName = "John Doe"; // we need to retrive from backend this and below
+	private String userType = "Faculty";
+	private static final Color backgroundColor = new Color(245, 245, 245);
+	private static final Color buttonColor = new Color(220, 220, 220);
+	private static final Color textColor = new Color(50, 50, 50);
+
 	public MainMenu() {
 		show();
 	}
-	
-	private void show() {
-		window = new JFrame();
-		this.window.setTitle("YorkU Library Application");
-		this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.window.setSize(1200, 800);
-		this.window.setLocationRelativeTo(null);
-		this.window.setResizable(false);
-		
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
-		
-		//depends on user type
-		JButton virtualtextbookbutton =createButton("Virtual textbook");
-		JButton trackcoursetextbookbutton =createButton("Track Course Textbook");
-		JLabel hellouser = createLabel("Hello ");
-		
-		JButton accountdetailsbutton = createButton("Account details");
-		accountdetailsbutton.setPreferredSize(new Dimension(100,50));
-		JTextField bookSearchField = createTextField();
 
-		JButton openbookonlineButton = createButton("Open Book Online");
-		JLabel bookSearchLabel = createLabel("Book Search: ");
-		JLabel currentlyrentedLabel = createLabel("Currently Rented Books: ");
-		JLabel currentlyrentedbooks = createLabel("");
-		
-		JButton contactsupportbutton = createButton("Contact Support");
-		JButton checkoutitems= createButton("Checkout Items");
-		JButton rentphysicalitem = createButton("Rent Physical Item");
-		JButton newsletterSubscription = createButton("Subscribe to Newsletter");
-		JButton requestnewtextbook=createButton("Request new textbook");
-		
-		accountdetailsbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				window.dispose();
-				
-			}
-		});
-		
-		openbookonlineButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				window.dispose();
-				
-			}
-		});
-		contactsupportbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				window.dispose();
-				
-			}
-		});
-		checkoutitems.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				window.dispose();
-				
-			}
-		});
-		rentphysicalitem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				window.dispose();
-				
-			}
-		});
-		newsletterSubscription.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				window.dispose();
-				
-			}
-		});
-		
-		requestnewtextbook.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				window.dispose();
-				
-			}
-		});
-		//Adding components to main panel, so it is shown to user
-		mainPanel.add(hellouser);
-		mainPanel.add(openbookonlineButton);
-		mainPanel.add(bookSearchLabel);
-		mainPanel.add(bookSearchField);
-		mainPanel.add(rentphysicalitem);
-		mainPanel.add(newsletterSubscription);
-		mainPanel.add(currentlyrentedLabel);
-		mainPanel.add(virtualtextbookbutton);
-		mainPanel.add(virtualtextbookbutton);
-		mainPanel.add(trackcoursetextbookbutton);
-		mainPanel.add(accountdetailsbutton);
-		mainPanel.add(checkoutitems);
-		mainPanel.add(contactsupportbutton);
-		mainPanel.add(requestnewtextbook);
-		//Buttons
-		
-		//Adds the main panel so it is visible to user
-		this.window.add(mainPanel);
-				
-		//Making the window visible
-		this.window.setVisible(true);
+	private void show() {
+		window = new JFrame("YorkU Library Application");
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setSize(1200, 800);
+		window.setLocationRelativeTo(null);
+		window.setResizable(true);
+
+		JPanel navigationPanel = createNavigationPanel();
+		JPanel userInfoPanel = createUserInfoPanel();
+
+		setupCardPanel();
+
+		window.setLayout(new BorderLayout());
+		window.add(userInfoPanel, BorderLayout.NORTH);
+		window.add(navigationPanel, BorderLayout.WEST);
+		window.add(cardPanel, BorderLayout.CENTER);
+
+		window.setVisible(true);
+	}
+
+	private JPanel createNavigationPanel() {
+		String[] features = {
+			"Home", "Rent Physical Item", "Virtual Textbook", 
+			"Track Course Textbook", "Open Book Online", 
+			"Subscribe to Newsletter", "Checkout Items", 
+			"Request New Textbook"
+		}; // we can add more features here as required 
+	
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+	
+		for (String feature : features) {
+			JButton button = createNavButton(feature);
+			button.setMaximumSize(new Dimension(Integer.MAX_VALUE, button.getMinimumSize().height));
+			panel.add(button);
+			panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		}
+	
+		return panel;
 	}
 	
+
+	private JPanel createUserInfoPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+	
+		panel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.DARK_GRAY));
+	
+		JLabel helloUser = new JLabel("Hello, " + userName + " - " + userType, JLabel.LEFT);
+		helloUser.setBorder(new EmptyBorder(0, 10, 0, 0));
+	
+		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		buttonsPanel.setOpaque(false); 
+		JButton accountDetailsButton = createButton("Account Details");
+		JButton logoutButton = createButton("Logout");
+	
+		buttonsPanel.add(accountDetailsButton);
+		buttonsPanel.add(logoutButton);
+	
+		panel.add(helloUser, BorderLayout.WEST);
+		panel.add(buttonsPanel, BorderLayout.EAST);
+	
+		return panel;
+	}
+	
+
+	private void setupCardPanel() {
+		JPanel homeCard = createHomeCard();
+		cardPanel.add(homeCard, "Home");
+
+		// otherra feature cards will be added here following the same pattern
+
+		// i am adding dummy values here to test
+		for (String cardName : new String[] { "Rent Physical Item", "Virtual Textbook",
+				"Track Course Textbook", "Open Book Online",
+				"Subscribe to Newsletter", "Checkout Items",
+				"Request New Textbook" }) {
+			cardPanel.add(createFeatureCard(cardName), cardName);
+		}
+	}
+
+	private JPanel createHomeCard() {
+		JPanel panel = new JPanel(new BorderLayout());
+		JLabel welcomeLabel = new JLabel(
+				"<html><h1>Welcome to YorkU Library Application</h1><p>Select an option from the left to begin.</p></html>",
+				JLabel.CENTER);
+		panel.add(welcomeLabel);
+		return panel;
+	}
+
+	private JButton createNavButton(String cardName) {
+		JButton button = new JButton(cardName);
+		button.setAlignmentX(Component.LEFT_ALIGNMENT);
+		button.setFocusable(false);
+		button.addActionListener((ActionEvent e) -> cardLayout.show(cardPanel, cardName));
+		return button;
+	}
+
 	private JButton createButton(String name) {
 		JButton button = new JButton(name);
 		button.setFocusable(false);
+		button.setBackground(buttonColor); 
+		button.setForeground(textColor); 
+		button.setOpaque(true);
+		button.setBorderPainted(true); 
 		return button;
 	}
-	
-	private JTextField createTextField() {
-		JTextField textfield = new JTextField(20);
-		return textfield;
+
+	private JPanel createFeatureCard(String featureName) {
+		JPanel panel = new JPanel();
+		panel.add(new JLabel(
+				"<html><h2>" + featureName + "</h2><p>Content for " + featureName + " feature goes here.</p></html>"));
+		return panel;
 	}
-	
-	private JLabel createLabel(String name) {
-		JLabel label = new JLabel(name);
-		return label;
+
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		SwingUtilities.invokeLater(MainMenu::new);
 	}
 }
