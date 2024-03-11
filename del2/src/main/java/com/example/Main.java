@@ -114,23 +114,44 @@ public class Main {
 
         CSVReader.readALL();
 
-        System.out.println("\nitems");
-        System.out.println(Library.items);
-
-        System.out.println("\nusers");
-        System.out.println(Library.users);
-
-        System.out.println("\ncourses");
-        System.out.println(Library.courses);
-
-        System.out.println("\ncopies available");
-        System.out.println(Library.copiesAvailable);
-
         String ANSI_YELLOW = "\u001B[33m";
         String ANSI_CYAN = "\u001B[36m";
         String ANSI_GREEN = "\u001B[32m";
         String ANSI_RESET = "\u001B[0m";
-        System.out.println("\ntesting associations _______________________");
+
+        // Printing Items
+        System.out.println(ANSI_YELLOW + "\nItems:" + ANSI_RESET);
+        for (Item item : Library.items) {
+            System.out.println(ANSI_CYAN + "Item ID: " + item.itemID + ", Name: " + item.name + ", Type: "
+                    + item.itemType + ", Location: " + item.locationInLibrary + ", Cost: " + item.cost + ", Status: "
+                    + item.statusType + ANSI_RESET);
+        }
+
+        // Printing Users
+        System.out.println(ANSI_YELLOW + "\nUsers:" + ANSI_RESET);
+        for (User user : Library.users) {
+            System.out.println(ANSI_GREEN + "User ID: " + user.userID + ", Name: " + user.name + ", Email: "
+                    + user.email + ", User Type: " + user.userType + ", Account Balance: " + user.accountBalance
+                    + ANSI_RESET);
+        }
+
+        // Printing Courses
+        System.out.println(ANSI_YELLOW + "\nCourses:" + ANSI_RESET);
+        for (Course course : Library.courses) {
+            System.out.println(ANSI_CYAN + "Course ID: " + course.courseID + ", Name: " + course.courseName
+                    + ", Course Code: " + course.courseCode + ", Start Date: " + course.startDate + ", End Date: "
+                    + course.endDate + ANSI_RESET);
+        }
+
+        // Printing Copies Avaliable
+        System.out.println(ANSI_YELLOW + "\nCopies Available:" + ANSI_RESET);
+        for (Entry<Item, Integer> entry : Library.copiesAvailable.entrySet()) {
+            Item item = entry.getKey();
+            Integer count = entry.getValue();
+            System.out.println(ANSI_GREEN + "Item ID: " + item.itemID + ", Name: " + item.name + ", Copies Available: "
+                    + count + ANSI_RESET);
+        }
+        System.out.println("\ntesting associations BELOW _______________________");
 
         System.out.println(ANSI_YELLOW + "Verifying user to item assignments:" + ANSI_RESET);
         for (User user : Library.users) {
@@ -148,7 +169,6 @@ public class Main {
             }
         }
 
-        // Verifying user-item-date associations
         System.out.println("\nVerifying user-item-date associations:");
         for (User user : Library.users) {
             System.out.println("User ID: " + user.userID + ", Name: " + user.name);
