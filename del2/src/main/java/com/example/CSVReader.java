@@ -19,9 +19,9 @@ public class CSVReader {
             readItems();
             readCourses();
             readCourse2textbook();
+            readU2I2D();
             readUser2item();
             readUser2course();
-            readU2I2D();
 
         } catch (IOException e) {
             e.printStackTrace();
