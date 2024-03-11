@@ -8,12 +8,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-
 public class CSVReader {
 
-public static String fileLocation = "del2" + File.separator + "src" + File.separator + "main" + File.separator + 
-                                    "java" + File.separator + "com" + File.separator + "example" + File.separator + 
-                                    "databaseFiles" + File.separator;
+    public static String fileLocation = "del2" + File.separator + "src" + File.separator + "main" + File.separator
+            + "resources" + File.separator + "databaseFiles" + File.separator;
+
     public static void readALL() {
         try {
             readUsers();
@@ -29,7 +28,6 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
         }
     }
 
-
     public static void writeALL() {
         try {
             String header = "itemID,name,itemType,locationInLibrary,cost,statusType";
@@ -37,10 +35,10 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
 
             header = "userID,name,email,password,userType,accountBalance";
             writeObjectArrayToFile("users.csv", header, Library.users);
-            
+
             header = "courseID,courseName,courseCode,startDate,endDate";
             writeObjectArrayToFile("courses.csv", header, Library.courses);
-            
+
             String header1 = "userID,itemID";
             String header2 = "userID,courseID";
             writeAssociations(header1, header2, Library.users);
@@ -50,17 +48,16 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }
 
-
-    private static void readItems() throws IOException {     
-        String headers = "itemID,name,itemType,locationInLibrary,cost,statusType";   
+    private static void readItems() throws IOException {
+        String headers = "itemID,name,itemType,locationInLibrary,cost,statusType";
         try (BufferedReader br = new BufferedReader(new FileReader(fileLocation + "items.csv"))) {
             String line;
             String[] headerArray = headers.split(",");
             boolean isHeader = true;
-            while ((line = br.readLine()) != null) {     
+            while ((line = br.readLine()) != null) {
                 if (isHeader) {
                     isHeader = false;
                     continue;
@@ -70,7 +67,7 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
                     System.err.println("(Items) Skipping invalid row: " + line);
                     continue;
                 }
-                
+
                 int id = Integer.parseInt(values[0]);
                 String name = values[1];
                 ItemType itemType = ItemType.valueOf(values[2]);
@@ -99,7 +96,7 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
                     System.err.println("(Users) Skipping invalid row: " + line);
                     continue;
                 }
-                
+
                 int userID = Integer.parseInt(values[0]);
                 String name = values[1];
                 String email = values[2];
@@ -128,7 +125,7 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
                     System.err.println("(Courses) Skipping invalid row: " + line);
                     continue;
                 }
-                
+
                 int courseID = Integer.parseInt(values[0]);
                 String courseName = values[1];
                 String courseCode = values[2];
@@ -156,7 +153,7 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
                     System.err.println("(Course2textbook) Skipping invalid row: " + line);
                     continue;
                 }
-                
+
                 int courseID = Integer.parseInt(values[0]);
                 int textbookID = Integer.parseInt(values[1]);
 
@@ -197,7 +194,7 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
                     System.err.println("(User2item) Skipping invalid row: " + line);
                     continue;
                 }
-                
+
                 int userID = Integer.parseInt(values[0]);
                 int itemID = Integer.parseInt(values[1]);
 
@@ -239,7 +236,7 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
                     System.err.println("(User2course) Skipping invalid row: " + line);
                     continue;
                 }
-                
+
                 int userID = Integer.parseInt(values[0]);
                 int courseID = Integer.parseInt(values[1]);
 
@@ -280,7 +277,7 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
                     System.err.println("(u2i2d) Skipping invalid row: " + line);
                     continue;
                 }
-                
+
                 int userID = Integer.parseInt(values[0]);
                 int itemID = Integer.parseInt(values[1]);
                 LocalDate date = LocalDate.parse(values[2]);
@@ -306,7 +303,8 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
         }
     }
 
-    private static void writeObjectArrayToFile(String fileName, String header, ArrayList<?> objArray) throws IOException {
+    private static void writeObjectArrayToFile(String fileName, String header, ArrayList<?> objArray)
+            throws IOException {
         try (FileWriter writer = new FileWriter(fileLocation + fileName)) {
             // Write header
             writer.write(header);
@@ -316,15 +314,15 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
             // Write data
             for (Object obj : objArray) {
                 if (obj instanceof Item) {
-                    Item tempobj = (Item)obj;
+                    Item tempobj = (Item) obj;
                     tempS = tempobj.csvFormat();
                 }
                 if (obj instanceof User) {
-                    User tempobj = (User)obj;
+                    User tempobj = (User) obj;
                     tempS = tempobj.csvFormat();
                 }
                 if (obj instanceof Course) {
-                    Course tempobj = (Course)obj;
+                    Course tempobj = (Course) obj;
                     tempS = tempobj.csvFormat();
                 }
                 writer.write(tempS);
@@ -333,16 +331,19 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
         }
     }
 
-    private static void writeAssociations(String itemHeader, String courseHeader, ArrayList<User> objArray) throws IOException {
+    private static void writeAssociations(String itemHeader, String courseHeader, ArrayList<User> objArray)
+            throws IOException {
         ArrayList<String> user2itemArrayList = new ArrayList<>();
         ArrayList<String> user2CourseArrayList = new ArrayList<>();
         for (int i = 0; i < Library.users.size(); i++) {
             for (int j = 0; j < Library.users.get(i).rentedItems.size(); j++) {
-                String t = String.format("%s,%s", Library.users.get(i).userID, Library.users.get(i).rentedItems.get(j).itemID);
+                String t = String.format("%s,%s", Library.users.get(i).userID,
+                        Library.users.get(i).rentedItems.get(j).itemID);
                 user2itemArrayList.add(t);
             }
             for (int j = 0; j < Library.users.get(i).courses.size(); j++) {
-                String t = String.format("%s,%s", Library.users.get(i).userID, Library.users.get(i).courses.get(j).courseID);
+                String t = String.format("%s,%s", Library.users.get(i).userID,
+                        Library.users.get(i).courses.get(j).courseID);
                 user2CourseArrayList.add(t);
             }
         }
@@ -394,6 +395,5 @@ public static String fileLocation = "del2" + File.separator + "src" + File.separ
             }
         }
     }
-
 
 }
