@@ -8,6 +8,7 @@ public class Item {
     public LocationType locationInLibrary;
     public double cost;
     public StatusType statusType;
+    private ItemContext context;
 
     public Item(int id, String name, ItemType itemType, LocationType location, double cost, StatusType statusType) {
         this.itemID = id;
@@ -16,9 +17,13 @@ public class Item {
         this.locationInLibrary = location;
         this.cost = cost;
         this.statusType = statusType;
+        this.context = new ItemContext(this);
     }
 
-    
+    public ItemContext getContext() {
+        return context;
+    }
+
     @Override
     public String toString() {
         return String.format("(itemID=%d,  name=%s,  itemType=%s,  location=%s,  cost=%f,   statusType=%s)", itemID,

@@ -3,7 +3,6 @@ package com.example;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 class User {
 
@@ -13,14 +12,8 @@ class User {
     private String password;
     private UserType userType;
     private double accountBalance;
-    // Added cartTotal for total cost for what user has in cart -Moses
-    public double cartTotal;
-    // Added choice for denial message, 1-4 for each cause. -Moses
-    public int rentalDenied;
     private ArrayList<Course> courses;
     private ArrayList<Item> rentedItems;
-    // Added userCart in order to store what user wants to buy -Moses
-    public ArrayList<Item> userCart;
     private HashMap<Item, LocalDate> rentLog;
 
     private User(UserBuilder builder) {
@@ -30,14 +23,8 @@ class User {
         this.password = builder.password;
         this.userType = builder.userType;
         this.accountBalance = builder.accountBalance;
-        // Initialized in constructor but does not need any parameter addition -Moses
-        this.cartTotal = 0.00;
-        // Initialized in constuctor but does not need any parameter addition -Moses
-        this.rentalDenied = 0;
         this.courses = new ArrayList<>();
         this.rentedItems = new ArrayList<>();
-        // Initialized in constructor but does not need any parameter addition -Moses
-        this.userCart = new ArrayList<>();
         this.rentLog = new HashMap<>();
     }
 
@@ -83,33 +70,30 @@ class User {
     // objects.
     public boolean addItem(Item item) {
 
-        if (threeOverDue()) {
-            this.rentalDenied = 1;
+        if (threeOverDue())
             return false;
-        }
-        if (!Library.copiesAvailable.containsKey(item)) {
-            this.rentalDenied = 2;
+
+        if (!Library.getInstance().getCopiesAvailable().containsKey(item)) {
             System.out.println("Item doesnt exist");
             return false;
         }
-        if (Library.copiesAvailable.get(item) <= 0) {
-            this.rentalDenied = 3;
+        if (Library.getInstance().getCopiesAvailable().get(item) <= 0) {
             System.out.println("Item has too many copies in use");
             return false;
         }
         if (rentedItems.size() >= 10) {
-            this.rentalDenied = 4;
             System.out.println("You have too many items being rented");
             return false;
         }
-        // if (accountBalance < item.cost) {
-        // System.out.println("You have too many items being rented");
-        // return false;
-        // }
+        if (accountBalance < item.cost) {
+            System.out.println("You have too many items being rented");
+            return false;
+        }
 
         rentedItems.add(item);
         if (item.itemType != ItemType.SUBSCRIPTION) {
-            Library.copiesAvailable.put(item, Library.copiesAvailable.get(item) - 1);
+            Library.getInstance().getCopiesAvailable().put(item,
+                    Library.getInstance().getCopiesAvailable().get(item) - 1);
         }
         return true;
     }
@@ -117,29 +101,25 @@ class User {
     // for adding items WITH logging date. Used when renting new item.
     public boolean rentItem(Item item) {
 
-        if (threeOverDue()) {
-            this.rentalDenied = 1;
+        if (threeOverDue())
             return false;
-        }
-        if (!Library.copiesAvailable.containsKey(item)) {
-            this.rentalDenied = 2;
+
+        if (!Library.getInstance().getCopiesAvailable().containsKey(item)) {
             System.out.println("Item doesnt exist");
             return false;
         }
-        if (Library.copiesAvailable.get(item) <= 0) {
-            this.rentalDenied = 3;
+        if (Library.getInstance().getCopiesAvailable().get(item) <= 0) {
             System.out.println("Item has too many copies in use");
             return false;
         }
         if (rentedItems.size() >= 10) {
-            this.rentalDenied = 4;
             System.out.println("You have too many items being rented");
             return false;
         }
-        // if (accountBalance < item.cost) {
-        // System.out.println("You have too many items being rented");
-        // return false;
-        // }
+        if (accountBalance < item.cost) {
+            System.out.println("You have too many items being rented");
+            return false;
+        }
 
         rentedItems.add(item);
         rentLog.put(item, LocalDate.now());
@@ -147,7 +127,7 @@ class User {
             Library.getInstance().getCopiesAvailable().put(item,
                     Library.getInstance().getCopiesAvailable().get(item) - 1);
         }
-        // this.accountBalance -= item.cost;
+        this.accountBalance -= item.cost;
         return true;
     }
 
@@ -213,12 +193,6 @@ class User {
 
     public String csvFormat() {
         return String.format("%d,%s,%s,%s,%s,%f", userID, name, email, password, userType, accountBalance);
-    }
-
-    // Added add to cart for user to keep track of what user wants to buy -Moses
-    public void addToCart(Item item) {
-        this.userCart.add(item);
-        this.cartTotal += item.cost;
     }
 
     public int getUserID() {

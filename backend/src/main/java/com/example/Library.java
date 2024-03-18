@@ -21,6 +21,7 @@ public class Library implements Subject {
     private List<Observer> observers = new ArrayList<>();
 
     private Library() {
+        observers.add(new NewItemAlert());
     }
 
     public static Library getInstance() {
@@ -105,6 +106,24 @@ public class Library implements Subject {
 
     public void applyDiscount(Item item) {
         item.cost = 0;
+    }
+
+    public boolean findUser(User user) {
+        for (User u : users) {
+            if (u.getUserID() == user.getUserID()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean findItem(Item item) {
+        for (Item i : items) {
+            if (i.itemID == item.itemID) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<Item> searchItems(String pattern, int numOfResults) {
@@ -201,15 +220,15 @@ public class Library implements Subject {
     // }
 
     public HashMap<Item, Integer> getCopiesAvailable() {
-        return copiesAvailable;
+        return new HashMap<>(copiesAvailable);
     }
 
     public HashMap<Course, Item> getCourse2textbook() {
-        return course2textbook;
+        return new HashMap<>(course2textbook);
     }
 
     public HashMap<Item, Course> getTextbook2course() {
-        return textbook2course;
+        return new HashMap<>(textbook2course);
     }
 
     @Override
@@ -225,20 +244,30 @@ public class Library implements Subject {
     @Override
     public void notifyObservers(Object arg) {
         for (Observer observer : observers) {
-            observer.update(arg);
+            if (arg instanceof Item) {
+                Item item = (Item) arg;
+                ItemState state = item.getContext().getState();
+                if (state instanceof AvailableState) {
+                    observer.update("Item " + item.name + " is now available.");
+                } else if (state instanceof CheckedOutState) {
+                    observer.update("Item " + item.name + " has been checked out.");
+                } else {
+                    observer.update(arg);
+                }
+            }
         }
     }
 
     public ArrayList<Item> getItems() {
-        return items;
+        return new ArrayList<>(items);
     }
 
     public ArrayList<User> getUsers() {
-        return users;
+        return new ArrayList<>(users);
     }
 
     public ArrayList<Course> getCourses() {
-        return courses;
+        return new ArrayList<>(courses);
     }
 }
 
