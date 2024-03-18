@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class CSVReader {
 
-    public static String fileLocation = "del2" + File.separator + "src" + File.separator + "main" + File.separator
+    public static String fileLocation = "backend" + File.separator + "src" + File.separator + "main" + File.separator
             + "resources" + File.separator + "databaseFiles" + File.separator;
 
     public static void readALL() {
