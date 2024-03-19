@@ -7,6 +7,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,7 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 public class MainMenu {
-
+	private List shoppingcart=new ArrayList();
 	private JFrame window;
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel cardPanel = new JPanel(cardLayout);
@@ -145,8 +147,18 @@ public class MainMenu {
 
 	private JPanel createFeatureCard(String featureName) {
 		JPanel panel = new JPanel();
-		panel.add(new JLabel(
-				"<html><h2>" + featureName + "</h2><p>Content for " + featureName + " feature goes here.</p></html>"));
+		if (featureName== ("Open Book Online")){
+		
+			OpenOnBook onlinebook=new OpenOnBook();
+			return onlinebook.show(panel);
+		}else if(featureName==("Request New Textbook")) {
+			
+		}else if (featureName==("Virtual Textbook")) {
+			VirtualTextbook virtualtextbook=new VirtualTextbook();
+			return virtualtextbook.show(panel);
+		}
+		
+		
 		return panel;
 	}
 

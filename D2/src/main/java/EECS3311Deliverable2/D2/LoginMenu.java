@@ -25,8 +25,9 @@ public class LoginMenu {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-
-        JLabel emailLabel = new JLabel("Email: ");
+        
+        JLabel emailLabel = new JLabel("Email: ",SwingConstants.CENTER);
+        
         JTextField emailField = new JTextField(20);
         JLabel passwordLabel = new JLabel("Password: ");
         JPasswordField passwordField = new JPasswordField(20);
