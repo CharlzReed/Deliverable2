@@ -3,6 +3,7 @@ package com.example;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 public class Library {
@@ -117,5 +118,23 @@ public class Library {
         }
         return userId;
     }
+
+    public static List<String> getUserRentedItemsWithDueDates(int userId) {
+        List<String> rentedItemsInfo = new ArrayList<>();
+        for (User user : users) {
+            if (user.userID == userId) {
+                user.rentLog.forEach((item, dueDate) -> {
+                    // Check if the item is a hardcover book
+                    if (item.itemType == ItemType.BOOK) {
+                        String info = String.format("Name: %s, Due Date: %s", item.name, dueDate.toString());
+                        rentedItemsInfo.add(info);
+                    }
+                });
+                break;
+            }
+        }
+        return rentedItemsInfo;
+    }
+    
 
 }
