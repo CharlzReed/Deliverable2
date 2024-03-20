@@ -56,28 +56,36 @@ public class LoginMenu {
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String email = emailField.getText();
+                String email = emailField.getText().toLowerCase();
                 String password = new String(passwordField.getPassword());
 
-                // Read all users from the backend
+                // Read all users from the backend. this is how we link backend to frontend.
+                // also look at the imports at the top.
+                // along with this i implemented a maven file. all you need to do is import the
+                // packages from backend that u need and use those in the frontend
+
                 try {
                     CSVReader.readALL(); // Make sure to call the read method to load the data
-                    boolean found = false;
+                    User loggedIn = null;
                     for (User user : Library.users) {
                         if (user.email.equals(email) && user.password.equals(password)) {
                             JOptionPane.showMessageDialog(window, "Login Successful!");
-                            window.dispose();
-                            new MainMenu(); 
-                            found = true;
+                            loggedIn = user;
                             break;
                         }
                     }
-                    if (!found) {
-                        JOptionPane.showMessageDialog(window, "Invalid email or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                    if (loggedIn != null) {
+                        window.dispose();
+                        new MainMenu(loggedIn).setVisible(true); 
+                    } else {
+                        JOptionPane.showMessageDialog(window, "Invalid email or password.", "Login Failed",
+                                JOptionPane.ERROR_MESSAGE);
                     }
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(window, "Error reading user data.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(window, "Error reading user data.", "Login Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
