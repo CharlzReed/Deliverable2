@@ -1,12 +1,10 @@
 package com.example;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -395,17 +393,6 @@ public class CSVReader {
                 writer.write(s);
                 writer.write("\n");
             }
-        }
-    }
-
-    public static void writeNewUser(User newUser) throws IOException {
-        String newUserLine = newUser.csvFormat();
-        try (FileWriter fw = new FileWriter(fileLocation + "users.csv", true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)) {
-            out.println(newUserLine);
-        } catch (IOException e) {
-            throw new IOException("Error writing new user to file", e);
         }
     }
 
