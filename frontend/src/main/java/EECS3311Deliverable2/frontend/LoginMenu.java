@@ -14,7 +14,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.example.CSVReader;
 import com.example.Library;
 import com.example.User;
 
@@ -65,10 +64,9 @@ public class LoginMenu {
                 // packages from backend that u need and use those in the frontend
 
                 try {
-                    CSVReader.readALL(); // Make sure to call the read method to load the data
                     User loggedIn = null;
                     for (User user : Library.users) {
-                        if (user.email.equals(email) && user.password.equals(password)) {
+                        if (user.email.toLowerCase().equals(email) && user.password.equals(password)) {
                             JOptionPane.showMessageDialog(window, "Login Successful!");
                             loggedIn = user;
                             break;
@@ -76,7 +74,7 @@ public class LoginMenu {
                     }
                     if (loggedIn != null) {
                         window.dispose();
-                        new MainMenu(loggedIn).setVisible(true); 
+                        new MainMenu(loggedIn).setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(window, "Invalid email or password.", "Login Failed",
                                 JOptionPane.ERROR_MESSAGE);

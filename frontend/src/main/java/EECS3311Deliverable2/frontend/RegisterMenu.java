@@ -18,7 +18,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import com.example.CSVReader;
+import com.example.DataManager;
 import com.example.Library;
 import com.example.User;
 import com.example.UserType;
@@ -57,8 +57,8 @@ public class RegisterMenu {
 		// Adding radio button and group for the user type
 		JLabel userLabel = createLabel("User Type: ");
 		JRadioButton studentBox = createRadioButton("Student");
-		JRadioButton facultyBox = createRadioButton("Faculty Staff");
-		JRadioButton nonFacultyBox = createRadioButton("Non-Faculty Staff");
+		JRadioButton facultyBox = createRadioButton("Faculty");
+		JRadioButton nonFacultyBox = createRadioButton("Non_Faculty");
 		JRadioButton visitorBox = createRadioButton("Visitor");
 
 		// Adding radio buttons to the user group
@@ -101,7 +101,7 @@ public class RegisterMenu {
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = nameField.getText();
-				String email = emailField.getText().toLowerCase(); // Normalize the email
+				String email = emailField.getText().toLowerCase();
 				String password = new String(passwordField.getPassword());
 				String selectedUserType = getUserType(userType);
 
@@ -141,12 +141,12 @@ public class RegisterMenu {
 				User newUser = new User(userId, name, email, password, type, accountBalance);
 
 				try {
-					CSVReader.writeNewUser(newUser);
+					DataManager.getInstance().registerNewUser(newUser);
 					String successMessage = selectedUserType.equals("Visitor") ? "Registration successful!"
 							: "Registration successful! Your account type requires further validation and will be reviewed by the management team.";
 					JOptionPane.showMessageDialog(window, successMessage, "Success", JOptionPane.INFORMATION_MESSAGE);
 					window.dispose();
-					// Optionally redirect to login or main menu
+					new MainWindow().setVisible(true);
 				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(window, "Error registering user.", "Error",
 							JOptionPane.ERROR_MESSAGE);
