@@ -58,10 +58,8 @@ public class LoginMenu {
                 String email = emailField.getText().toLowerCase();
                 String password = new String(passwordField.getPassword());
 
-                // Read all users from the backend. this is how we link backend to frontend.
-                // also look at the imports at the top.
-                // along with this i implemented a maven file. all you need to do is import the
-                // packages from backend that u need and use those in the frontend
+                // below is how you link backend to frontend. I set up everything all u need to do is call stuff how u normally do in the backend.
+                // for example look how I called library.users. all the data is populated and everything is set, so its easy to call anything direclty,.
 
                 try {
                     User loggedIn = null;
