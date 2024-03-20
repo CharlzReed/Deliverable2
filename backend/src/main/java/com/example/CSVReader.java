@@ -75,7 +75,35 @@ public class CSVReader {
                 double cost = Double.parseDouble(values[4]);
                 StatusType statusType = StatusType.valueOf(values[5]);
 
-                Library.getInstance().addItem(new Item(id, name, itemType, location, cost, statusType));
+                Item item = null;
+
+                switch (itemType) {
+                    case BOOK:
+                        String author = values[6];
+                        int year = Integer.parseInt(values[7]);
+                        item = ItemFactory.createBook(id, name, location, cost, statusType, author, year);
+                        break;
+                    case MAGAZINE:
+                        String issueNumber = values[6];
+                        String genre = values[7];
+                        item = ItemFactory.createMagazine(id, name, location, cost, statusType, issueNumber, genre);
+                        break;
+                    case CD:
+                        String artist = values[6];
+                        int releaseYear = Integer.parseInt(values[7]);
+                        item = ItemFactory.createCD(id, name, location, cost, statusType, artist, releaseYear);
+                        break;
+                    case SUBSCRIPTION:
+                        String provider = values[6];
+                        String subscriptionType = values[7];
+                        item = ItemFactory.createSubscription(id, name, location, cost, statusType, provider,
+                                subscriptionType);
+                        break;
+
+                    default:
+                        System.out.println("Unsupported item type: " + itemType);
+                        break;
+                }
             }
         }
     }
