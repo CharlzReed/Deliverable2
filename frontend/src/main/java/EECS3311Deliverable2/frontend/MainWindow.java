@@ -72,6 +72,10 @@ public class MainWindow {
         window.setVisible(true);
     }
 
+    public void setVisible(boolean visible){
+		window.setVisible(visible);
+	}
+
     private JButton createButton(String name) {
         JButton button = new JButton(name);
         button.setFocusable(false);

@@ -14,12 +14,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.example.Library;
+import com.example.User;
+
 public class LoginMenu {
 
     private JFrame window;
-    // using temp credentials
-    private final String tempEmail = "temp@yorku.ca";
-    private final String tempPassword = "123";
 
     public LoginMenu() {
         show();
@@ -34,9 +34,9 @@ public class LoginMenu {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        
-        JLabel emailLabel = new JLabel("Email: ",SwingConstants.CENTER);
-        
+
+        JLabel emailLabel = new JLabel("Email: ", SwingConstants.CENTER);
+
         JTextField emailField = new JTextField(20);
         JLabel passwordLabel = new JLabel("Password: ");
         JPasswordField passwordField = new JPasswordField(20);
@@ -55,16 +55,33 @@ public class LoginMenu {
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String email = emailField.getText();
+                String email = emailField.getText().toLowerCase();
                 String password = new String(passwordField.getPassword());
 
-                // we need to make this better later
-                if (email.equals(tempEmail) && password.equals(tempPassword)) {
-                    JOptionPane.showMessageDialog(window, "Login Successful!");
-                    window.dispose();
-                    new MainMenu(); 
-                } else {
-                    JOptionPane.showMessageDialog(window, "Invalid email or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                // below is how you link backend to frontend. I set up everything all u need to do is call stuff how u normally do in the backend.
+                // for example look how I called library.users. all the data is populated and everything is set, so its easy to call anything direclty,.
+
+                try {
+                    User loggedIn = null;
+                    for (User user : Library.users) {
+                        if (user.email.toLowerCase().equals(email) && user.password.equals(password)) {
+                            JOptionPane.showMessageDialog(window, "Login Successful!");
+                            loggedIn = user;
+                            break;
+                        }
+                    }
+                    if (loggedIn != null) {
+                        window.dispose();
+                        new MainMenu(loggedIn).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(window, "Invalid email or password.", "Login Failed",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(window, "Error reading user data.", "Login Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -85,4 +102,5 @@ public class LoginMenu {
         button.setFocusable(false);
         return button;
     }
+
 }

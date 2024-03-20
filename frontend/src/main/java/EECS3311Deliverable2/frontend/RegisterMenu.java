@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -16,6 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import com.example.DataManager;
+import com.example.Library;
+import com.example.User;
+import com.example.UserType;
 
 public class RegisterMenu {
 
@@ -38,19 +44,21 @@ public class RegisterMenu {
 
 		// Adding email and passwords for registration
 		JButton backButton = createButton("<- Back");
+		JTextField nameField = createTextField();
 		JTextField emailField = createTextField();
 		JPasswordField passwordField = new JPasswordField(20);
 		JButton registerButton = createButton("Register");
+
 		JLabel emailLabel = createLabel("Email: ");
 		JLabel passwordLabel = createLabel("Password: ");
 		registerButton.setPreferredSize(new Dimension(100, 50));
 		backButton.setPreferredSize(new Dimension(100, 50));
-
+		JLabel nameLabel = createLabel("Name: ");
 		// Adding radio button and group for the user type
 		JLabel userLabel = createLabel("User Type: ");
 		JRadioButton studentBox = createRadioButton("Student");
-		JRadioButton facultyBox = createRadioButton("Faculty Staff");
-		JRadioButton nonFacultyBox = createRadioButton("Non-Faculty Staff");
+		JRadioButton facultyBox = createRadioButton("Faculty");
+		JRadioButton nonFacultyBox = createRadioButton("Non_Faculty");
 		JRadioButton visitorBox = createRadioButton("Visitor");
 
 		// Adding radio buttons to the user group
@@ -62,6 +70,8 @@ public class RegisterMenu {
 
 		// Adding components to main panel, so it is shown to user
 		mainPanel.add(backButton);
+		mainPanel.add(nameLabel);
+		mainPanel.add(nameField);
 		mainPanel.add(emailLabel);
 		mainPanel.add(emailField);
 		mainPanel.add(passwordLabel);
@@ -90,34 +100,58 @@ public class RegisterMenu {
 
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String email = emailField.getText();
+				String name = nameField.getText();
+				String email = emailField.getText().toLowerCase();
 				String password = new String(passwordField.getPassword());
 				String selectedUserType = getUserType(userType);
+
+				// used to validate email
 				if (!isEmailValid(email)) {
-					JOptionPane.showMessageDialog(window, "Please enter a valid email address.");
+					JOptionPane.showMessageDialog(window, "Please enter a valid email address.", "Validation Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
-				if (selectedUserType.isEmpty()){
-					JOptionPane.showMessageDialog(window, "Please select a user type.");
+				// to validate name
+				if (name.trim().isEmpty()) {
+					JOptionPane.showMessageDialog(window, "Please enter your name.", "Validation Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
+				// used to validate user selection
+				if (selectedUserType.isEmpty()) {
+					JOptionPane.showMessageDialog(window, "Please select a user type.", "Validation Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
+				// uused to validate password
 				if (!isPasswordValid(password)) {
 					JOptionPane.showMessageDialog(window,
-				"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long.");
+							"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long.",
+							"Validation Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
-				if(!selectedUserType.equals("Visitor")) {
-					JOptionPane.showMessageDialog(window, "Registration successful! Your account type requires further validation and will be reviewed by the management team.");
-				} else {
-					JOptionPane.showMessageDialog(window, "Registration successful!");
+				UserType type = UserType.valueOf(selectedUserType.toUpperCase());
+				int userId = Library.generateNextUserId(); // to generate a unique id for sure
+				double accountBalance = 20.0; // default balance for new users
+
+				User newUser = new User(userId, name, email, password, type, accountBalance);
+
+				try {
+					DataManager.getInstance().registerNewUser(newUser);
+					String successMessage = selectedUserType.equals("Visitor") ? "Registration successful!"
+							: "Registration successful! Your account type requires further validation and will be reviewed by the management team.";
+					JOptionPane.showMessageDialog(window, successMessage, "Success", JOptionPane.INFORMATION_MESSAGE);
+					window.dispose();
+					new MainWindow().setVisible(true);
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(window, "Error registering user.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
 				}
-
-				window.dispose();
-
 			}
 		});
 

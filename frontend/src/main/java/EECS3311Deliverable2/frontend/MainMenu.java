@@ -21,16 +21,22 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.example.User;
+
 public class MainMenu {
-	private List shoppingcart=new ArrayList();
+	private List shoppingcart = new ArrayList();
 	private JFrame window;
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel cardPanel = new JPanel(cardLayout);
-	private String userName = "John Doe"; // we need to retrive from backend this and below
-	private String userType = "Faculty";
+	private User currentUser;
 	private static final Color backgroundColor = new Color(245, 245, 245);
 	private static final Color buttonColor = new Color(220, 220, 220);
 	private static final Color textColor = new Color(50, 50, 50);
+
+	public MainMenu(User currentUser) {
+		this.currentUser = currentUser;
+		show();
+	}
 
 	public MainMenu() {
 		show();
@@ -58,50 +64,48 @@ public class MainMenu {
 
 	private JPanel createNavigationPanel() {
 		String[] features = {
-			"Home", "Rent Physical Item", "Virtual Textbook", 
-			"Track Course Textbook", "Open Book Online", 
-			"Subscribe to Newsletter", "Checkout Items", 
-			"Request New Textbook"
-		}; // we can add more features here as required 
-	
+				"Home", "Rent Physical Item", "Virtual Textbook",
+				"Track Course Textbook", "Open Book Online",
+				"Subscribe to Newsletter", "Checkout Items",
+				"Request New Textbook"
+		}; // we can add more features here as required
+
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
-	
+
 		for (String feature : features) {
 			JButton button = createNavButton(feature);
 			button.setMaximumSize(new Dimension(Integer.MAX_VALUE, button.getMinimumSize().height));
 			panel.add(button);
 			panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		}
-	
+
 		return panel;
 	}
-	
 
 	private JPanel createUserInfoPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
-	
+
 		panel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.DARK_GRAY));
-	
-		JLabel helloUser = new JLabel("Hello, " + userName + " - " + userType, JLabel.LEFT);
+
+		JLabel helloUser = new JLabel("Hello, " + currentUser.getName() + " - " + currentUser.getUserType().toString(), JLabel.LEFT);
 		helloUser.setBorder(new EmptyBorder(0, 10, 0, 0));
-	
+
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonsPanel.setOpaque(false); 
+		buttonsPanel.setOpaque(false);
 		JButton accountDetailsButton = createButton("Account Details");
 		JButton logoutButton = createButton("Logout");
-	
+
 		buttonsPanel.add(accountDetailsButton);
 		buttonsPanel.add(logoutButton);
-	
+
 		panel.add(helloUser, BorderLayout.WEST);
 		panel.add(buttonsPanel, BorderLayout.EAST);
-	
+
 		return panel;
 	}
-	
 
 	private void setupCardPanel() {
 		JPanel homeCard = createHomeCard();
@@ -138,28 +142,31 @@ public class MainMenu {
 	private JButton createButton(String name) {
 		JButton button = new JButton(name);
 		button.setFocusable(false);
-		button.setBackground(buttonColor); 
-		button.setForeground(textColor); 
+		button.setBackground(buttonColor);
+		button.setForeground(textColor);
 		button.setOpaque(true);
-		button.setBorderPainted(true); 
+		button.setBorderPainted(true);
 		return button;
 	}
 
 	private JPanel createFeatureCard(String featureName) {
 		JPanel panel = new JPanel();
-		if (featureName== ("Open Book Online")){
-		
-			OpenOnBook onlinebook=new OpenOnBook();
+		if (featureName == ("Open Book Online")) {
+
+			OpenOnBook onlinebook = new OpenOnBook();
 			return onlinebook.show(panel);
-		}else if(featureName==("Request New Textbook")) {
-			
-		}else if (featureName==("Virtual Textbook")) {
-			VirtualTextbook virtualtextbook=new VirtualTextbook();
+		} else if (featureName == ("Request New Textbook")) {
+
+		} else if (featureName == ("Virtual Textbook")) {
+			VirtualTextbook virtualtextbook = new VirtualTextbook();
 			return virtualtextbook.show(panel);
 		}
-		
-		
+
 		return panel;
+	}
+
+	public void setVisible(boolean visible){
+		window.setVisible(visible);
 	}
 
 	public static void main(String[] args) {
