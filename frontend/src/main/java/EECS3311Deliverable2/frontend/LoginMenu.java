@@ -14,12 +14,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.example.CSVReader;
+import com.example.Library;
+import com.example.User;
+
 public class LoginMenu {
 
     private JFrame window;
-    // using temp credentials
-    private final String tempEmail = "temp@yorku.ca";
-    private final String tempPassword = "123";
 
     public LoginMenu() {
         show();
@@ -34,9 +35,9 @@ public class LoginMenu {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        
-        JLabel emailLabel = new JLabel("Email: ",SwingConstants.CENTER);
-        
+
+        JLabel emailLabel = new JLabel("Email: ", SwingConstants.CENTER);
+
         JTextField emailField = new JTextField(20);
         JLabel passwordLabel = new JLabel("Password: ");
         JPasswordField passwordField = new JPasswordField(20);
@@ -58,13 +59,25 @@ public class LoginMenu {
                 String email = emailField.getText();
                 String password = new String(passwordField.getPassword());
 
-                // we need to make this better later
-                if (email.equals(tempEmail) && password.equals(tempPassword)) {
-                    JOptionPane.showMessageDialog(window, "Login Successful!");
-                    window.dispose();
-                    new MainMenu(); 
-                } else {
-                    JOptionPane.showMessageDialog(window, "Invalid email or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                // Read all users from the backend
+                try {
+                    CSVReader.readALL(); // Make sure to call the read method to load the data
+                    boolean found = false;
+                    for (User user : Library.users) {
+                        if (user.email.equals(email) && user.password.equals(password)) {
+                            JOptionPane.showMessageDialog(window, "Login Successful!");
+                            window.dispose();
+                            new MainMenu(); 
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        JOptionPane.showMessageDialog(window, "Invalid email or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(window, "Error reading user data.", "Login Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -85,4 +98,5 @@ public class LoginMenu {
         button.setFocusable(false);
         return button;
     }
+
 }

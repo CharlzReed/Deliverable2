@@ -1,11 +1,11 @@
 package com.example;
 
-import java.util.HashMap;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
-class User {
+public class User {
 
     public int userID;
     public String name;
