@@ -6,8 +6,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -17,14 +19,18 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
+import com.example.Library;
 import com.example.User;
 
 public class MainMenu {
-	private List shoppingcart = new ArrayList();
 	private JFrame window;
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel cardPanel = new JPanel(cardLayout);
@@ -35,11 +41,52 @@ public class MainMenu {
 
 	public MainMenu(User currentUser) {
 		this.currentUser = currentUser;
+		setupUIManager();
 		show();
 	}
 
 	public MainMenu() {
 		show();
+	}
+
+	private void setupUIManager() {
+		UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 14));
+		UIManager.put("Button.font", new Font("Arial", Font.PLAIN, 14));
+	}
+
+	private JScrollPane createRentedItemsPanel() {
+		JPanel rentedItemsPanel = new JPanel();
+		rentedItemsPanel.setLayout(new BoxLayout(rentedItemsPanel, BoxLayout.Y_AXIS));
+		rentedItemsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Currently Rented Hardcover Books:"));
+
+		// Scroll pane for overflow of items
+		JScrollPane scrollPane = new JScrollPane(rentedItemsPanel);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+		List<String> rentedItems = Library.getUserRentedItemsWithDueDates(currentUser.userID);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate today = LocalDate.now();
+
+		if (rentedItems.isEmpty()) {
+			rentedItemsPanel.add(new JLabel("No items currently rented."));
+		} else {
+			for (String item : rentedItems) {
+				JLabel itemLabel = new JLabel(item);
+				itemLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+				LocalDate dueDate = LocalDate.parse(item.split(", Due Date: ")[1], formatter);
+				if (dueDate.isBefore(today)) {
+					itemLabel.setForeground(Color.RED); // Overdue
+					itemLabel.setText(itemLabel.getText() + " - Overdue");
+				} else if (dueDate.equals(today) || dueDate.isEqual(today.plusDays(1))) {
+					itemLabel.setForeground(Color.ORANGE); // Due soon
+					itemLabel.setText(itemLabel.getText() + " - Due Soon");
+				}
+				rentedItemsPanel.add(itemLabel);
+			}
+		}
+
+		return scrollPane; // Return the scroll pane instead of the panel
 	}
 
 	private void show() {
@@ -90,7 +137,8 @@ public class MainMenu {
 
 		panel.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.DARK_GRAY));
 
-		JLabel helloUser = new JLabel("Hello, " + currentUser.getName() + " - " + currentUser.getUserType().toString(), JLabel.LEFT);
+		JLabel helloUser = new JLabel("Hello, " + currentUser.getName() + " - " + currentUser.getUserType().toString(),
+				JLabel.LEFT);
 		helloUser.setBorder(new EmptyBorder(0, 10, 0, 0));
 
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -125,9 +173,15 @@ public class MainMenu {
 	private JPanel createHomeCard() {
 		JPanel panel = new JPanel(new BorderLayout());
 		JLabel welcomeLabel = new JLabel(
-				"<html><h1>Welcome to YorkU Library Application</h1><p>Select an option from the left to begin.</p></html>",
+				"<html><h1>Welcome to YorkU Library Application</h1></html>",
 				JLabel.CENTER);
-		panel.add(welcomeLabel);
+
+		// Add the rented items panel
+		JScrollPane rentedItemsPanel = createRentedItemsPanel();
+
+		panel.add(welcomeLabel, BorderLayout.NORTH);
+		panel.add(rentedItemsPanel, BorderLayout.CENTER);
+
 		return panel;
 	}
 
@@ -151,21 +205,24 @@ public class MainMenu {
 
 	private JPanel createFeatureCard(String featureName) {
 		JPanel panel = new JPanel();
-		if (featureName == ("Open Book Online")) {
-
-			OpenOnBook onlinebook = new OpenOnBook();
-			return onlinebook.show(panel);
-		} else if (featureName == ("Request New Textbook")) {
-
-		} else if (featureName == ("Virtual Textbook")) {
-			VirtualTextbook virtualtextbook = new VirtualTextbook();
-			return virtualtextbook.show(panel);
-		}
+		if (null != featureName)
+			switch (featureName) {
+				case ("Open Book Online"):
+					OpenOnBook onlinebook = new OpenOnBook();
+					return onlinebook.show(panel);
+				case ("Request New Textbook"):
+					break;
+				case ("Virtual Textbook"):
+					VirtualTextbook virtualtextbook = new VirtualTextbook();
+					return virtualtextbook.show(panel);
+				default:
+					break;
+			}
 
 		return panel;
 	}
 
-	public void setVisible(boolean visible){
+	public void setVisible(boolean visible) {
 		window.setVisible(visible);
 	}
 
