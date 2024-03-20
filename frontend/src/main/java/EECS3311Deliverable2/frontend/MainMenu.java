@@ -231,6 +231,11 @@ public class MainMenu {
 		} else if (featureName == ("Request New Textbook")) {
 
 		}
+		else if (featureName == ("Rent Physical Item")) {
+			RentPhysItem rentPhysItem = new RentPhysItem();
+			return rentPhysItem.show(panel);
+		}
+		
 		return panel;
 	}
 

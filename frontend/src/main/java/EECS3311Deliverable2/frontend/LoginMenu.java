@@ -1,7 +1,7 @@
 package EECS3311Deliverable2.frontend;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
