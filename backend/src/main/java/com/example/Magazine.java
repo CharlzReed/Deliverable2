@@ -18,4 +18,9 @@ public class Magazine extends Item {
     public String getGenre() {
         return genre;
     }
+
+    public String csvFormat() {
+        return String.format("%d,%s,%s,%s,%f,%s,%s,%s", itemID, name, itemType, locationInLibrary, cost, statusType,
+                issueNumber, genre);
+    }
 }

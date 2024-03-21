@@ -30,7 +30,7 @@ public class CSVReader {
 
     public static void writeALL() {
         try {
-            String header = "itemID,name,itemType,locationInLibrary,cost,statusType";
+            String header = "itemID,name,itemType,locationInLibrary,cost,statusType,unique1,unique2";
             writeObjectArrayToFile("items.csv", header, Library.getInstance().getItems());
 
             header = "userID,name,email,password,userType,accountBalance";
@@ -52,7 +52,7 @@ public class CSVReader {
     }
 
     private static void readItems() throws IOException {
-        String headers = "itemID,name,itemType,locationInLibrary,cost,statusType";
+        String headers = "itemID,name,itemType,locationInLibrary,cost,statusType,unique1,unique2";
         try (BufferedReader br = new BufferedReader(new FileReader(fileLocation + "items.csv"))) {
             String line;
             String[] headerArray = headers.split(",");
@@ -74,36 +74,50 @@ public class CSVReader {
                 LocationType location = LocationType.valueOf(values[3]);
                 double cost = Double.parseDouble(values[4]);
                 StatusType statusType = StatusType.valueOf(values[5]);
+                String unique1 = values[6];
+                String unique2 = values[7];
 
                 Item item = null;
 
                 switch (itemType) {
                     case BOOK:
-                        String author = values[6];
-                        int year = Integer.parseInt(values[7]);
+                        String author = unique1;
+                        int year = Integer.parseInt(unique2);
                         item = ItemFactory.createBook(id, name, location, cost, statusType, author, year);
+                        Library.getInstance().addItem(item);
                         break;
                     case MAGAZINE:
-                        String issueNumber = values[6];
-                        String genre = values[7];
+                        String issueNumber = unique1;
+                        String genre = unique2;
                         item = ItemFactory.createMagazine(id, name, location, cost, statusType, issueNumber, genre);
+                        Library.getInstance().addItem(item);
                         break;
                     case CD:
-                        String artist = values[6];
-                        int releaseYear = Integer.parseInt(values[7]);
+                        String artist = unique1;
+                        int releaseYear = Integer.parseInt(unique2);
                         item = ItemFactory.createCD(id, name, location, cost, statusType, artist, releaseYear);
+                        Library.getInstance().addItem(item);
                         break;
                     case SUBSCRIPTION:
-                        String provider = values[6];
-                        String subscriptionType = values[7];
+                        String provider = unique1;
+                        String subscriptionType = unique2;
                         item = ItemFactory.createSubscription(id, name, location, cost, statusType, provider,
                                 subscriptionType);
+                        Library.getInstance().addItem(item);
+                        break;
+
+                    case TEXTBOOK:
+                        String subject = unique1;
+                        String isbn = unique2;
+                        item = ItemFactory.createTextbook(id, name, location, cost, statusType, subject, isbn);
+                        Library.getInstance().addItem(item);
                         break;
 
                     default:
                         System.out.println("Unsupported item type: " + itemType);
                         break;
                 }
+
             }
         }
     }

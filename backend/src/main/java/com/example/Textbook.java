@@ -18,4 +18,9 @@ public class Textbook extends Item {
     public String getISBN() {
         return isbn;
     }
+
+    public String csvFormat() {
+        return String.format("%d,%s,%s,%s,%f,%s,%s,%s", itemID, name, itemType, locationInLibrary, cost, statusType,
+                subject, isbn);
+    }
 }

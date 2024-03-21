@@ -168,6 +168,19 @@ class User {
         return (int) daysOverdue;
     }
 
+    public void checkForOverdueItems(){
+        for(Item item : rentedItems){
+            if(daysOverdue(item) > 0){
+                OverdueEvent event = new OverdueEvent(item, this);
+                notifyOverdueListeners(event);
+            }
+        }
+    }
+
+    private void notifyOverdueListeners(OverdueEvent event){
+        Library.getInstance().notifyOverdueListeners(event);
+    }
+
     private boolean threeOverDue() {
         int n = 0;
         for (Item item : rentedItems) {

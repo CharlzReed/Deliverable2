@@ -18,4 +18,10 @@ public class Book extends Item {
     public int getPublicationYear() {
         return publicationYear;
     }
+
+    public String csvFormat() {
+        return String.format("%d,%s,%s,%s,%f,%s,%s,%d", itemID, name, itemType, locationInLibrary, cost, statusType,
+                author, publicationYear);
+
+    }
 }

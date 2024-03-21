@@ -9,6 +9,7 @@ public class Item {
     public double cost;
     public StatusType statusType;
     private ItemContext context;
+    private DiscountStrategy discount = new NoDiscountStrategy();
 
     public Item(int id, String name, ItemType itemType, LocationType location, double cost, StatusType statusType) {
         this.itemID = id;
@@ -33,6 +34,14 @@ public class Item {
     public String csvFormat() {
         return String.format("%d,%s,%s,%s,%f,%s", itemID, name, itemType, locationInLibrary, cost, statusType);
 
+    }
+
+    public void applyDiscountStrategy(DiscountStrategy discountStrategy){
+        this.discount = discountStrategy;
+    }
+
+    public double getCostAfterDiscount(){
+        return discount.applyDiscount(cost);
     }
 
 }

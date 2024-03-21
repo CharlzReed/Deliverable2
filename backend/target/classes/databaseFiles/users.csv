@@ -9,3 +9,11 @@ userID,name,email,password,userType,accountBalance
 2007,Toby,toby100@gmail.com,asdf8,NON_FACULTY,87.050000
 2008,Jeff,MyNameIsJeff@gmail.com,asdf9,ADMIN,0.170000
 2593,Arav Rabanni,aravfish04@gmail.com,MomDad04#,VISITOR,20.000000
+9978,John Doe,john.doe@example.com,securePassword123,STUDENT,12.080000
+7699,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+6116,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+3022,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+9039,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+4334,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+9048,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+5299,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000

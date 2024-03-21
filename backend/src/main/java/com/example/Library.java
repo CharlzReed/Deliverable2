@@ -19,6 +19,7 @@ public class Library implements Subject {
     private ArrayList<Course> courses = new ArrayList<>();
     private HashSet<Integer> noDupes = new HashSet<>();
     private List<Observer> observers = new ArrayList<>();
+    private List<OverdueListener> overdueListeners = new ArrayList<>();
 
     private Library() {
         observers.add(new NewItemAlert());
@@ -103,11 +104,7 @@ public class Library implements Subject {
             }
         }
     }
-
-    public void applyDiscount(Item item) {
-        item.cost = 0;
-    }
-
+    
     public boolean findUser(User user) {
         for (User u : users) {
             if (u.getUserID() == user.getUserID()) {
@@ -269,5 +266,19 @@ public class Library implements Subject {
     public ArrayList<Course> getCourses() {
         return new ArrayList<>(courses);
     }
-}
 
+    
+    public void addOverdueListener(OverdueListener listener) {
+        overdueListeners.add(listener);
+    }
+
+    public void removeOverdueListener(OverdueListener listener) {
+        overdueListeners.remove(listener);
+    }
+
+    public void notifyOverdueListeners(OverdueEvent event) {
+        for (OverdueListener listener : overdueListeners) {
+            listener.onOverdueItem(event);
+        }
+    }
+}

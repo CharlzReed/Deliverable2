@@ -18,4 +18,9 @@ public class CD extends Item {
     public int getReleaseYear() {
         return releaseYear;
     }
+
+    public String csvFormat() {
+        return String.format("%d,%s,%s,%s,%f,%s,%s,%d", itemID, name, itemType, locationInLibrary, cost, statusType,
+                artist, releaseYear);
+    }
 }
