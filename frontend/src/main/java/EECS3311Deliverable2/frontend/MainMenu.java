@@ -114,7 +114,7 @@ public class MainMenu {
 
 	private JPanel createNavigationPanel() {
 		String[] features = {
-			"Home", "Rent Physical Item", "Access Virtual Textbook", 
+			"Home", "Rent Physical Item", "Virtual Textbook", 
 			"Track Course Textbook", "Open Book Online", 
 			"Subscribe to Newsletter", "Checkout Items", 
 			"Request New Textbook"
