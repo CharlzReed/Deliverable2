@@ -20,11 +20,11 @@ public class Item {
         this.edition = "";
         this.isAvailable = true;
     }
-    
+
     public String getName() {
         return this.name;
     }
-    
+
     public String getEdition() {
         return edition;
     }
@@ -51,24 +51,40 @@ public class Item {
     public String csvFormat() {
         return String.format("%d,%s,%s,%s,%f,%s", itemID, name, itemType, locationInLibrary, cost, statusType);
     }
-    //addison
-    public ItemType getItemType(){
+
+    // addison
+    public ItemType getItemType() {
         return this.itemType;
     }
-    //addison
-    public String getname(){
+
+    // addison
+    public String getname() {
         return this.name;
     }
-    //addison
-    public double getcost(){
+
+    // addison
+    public double getcost() {
         return this.cost;
     }
-    //addison
-    public StatusType getstatustype(){
+
+    // addison
+    public StatusType getstatustype() {
         return this.statusType;
     }
-    //addison
-    public LocationType getlocationInLibrary(){
+
+    // addison
+    public LocationType getlocationInLibrary() {
         return this.locationInLibrary;
     }
+
+    // Added this to see if an item is a subscription in frontend (Probably
+    // inefficient but it works) -Moses
+    public boolean isSubscription() {
+        if (this.itemType.equals(ItemType.SUBSCRIPTION)) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -33,11 +34,11 @@ import com.example.Library;
 import com.example.User;
 
 public class MainMenu {
-	private List<String> shoppingCart = new ArrayList<String>();
 	private JFrame window;
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel cardPanel = new JPanel(cardLayout);
 	private User currentUser;
+	private CheckoutItems checkoutUpdate;
 	private static final Color backgroundColor = new Color(245, 245, 245);
 	private static final Color buttonColor = new Color(220, 220, 220);
 	private static final Color textColor = new Color(50, 50, 50);
@@ -126,6 +127,12 @@ public class MainMenu {
 
 		for (String feature : features) {
 			JButton button = createNavButton(feature);
+
+			//When checkout items is clicked on, everything gets refreshed so cart shows
+			if(feature.equals("Checkout Items")) {
+				button.addActionListener((ActionEvent e) -> this.checkoutUpdate.refresh());
+			}
+
 			button.setMaximumSize(new Dimension(Integer.MAX_VALUE, button.getMinimumSize().height));
 			panel.add(button);
 			panel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -234,13 +241,11 @@ public class MainMenu {
 
 		}
 		else if (featureName == ("Rent Physical Item")) {
-			RentPhysItem rentPhysItem = new RentPhysItem();
-			return rentPhysItem.show(panel);
+			new RentPhysItem(panel, this.currentUser);
 		}
 		else if (featureName == ("Checkout Items")) {
-			CheckoutItems checkoutItems = new CheckoutItems();
-			checkoutItems.initializeCart(shoppingCart);
-			return checkoutItems.show(panel);
+			this.checkoutUpdate = new CheckoutItems(panel, this.currentUser);
+			this.checkoutUpdate.show(panel);
 		}
 		
 		return panel;

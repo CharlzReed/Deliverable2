@@ -6,87 +6,98 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.example.User;
+import com.example.Item;
+import com.example.Library;
+
 public class RentPhysItem {
-	public JPanel show(JPanel j) {
-		String[] a= {"a","b","c","c","c","c","c","c","c","c"};
+	private User currentUser;
+
+	public RentPhysItem(JPanel j, User currentUser) {
+		this.currentUser = currentUser;
+		show(j);
+	}
+	
+	private JPanel show(JPanel j) {
 		DefaultListModel<String> itemList=new DefaultListModel<>();
+		HashMap<String, Item> grabList = new HashMap<>();
 		
-		for (String e:a) {
-			itemList.addElement(e);
-		}
+		//Storing description of items to show to the user, along with the list of items
+		loadData(itemList, grabList);
 		
 		JTextField searchBar = createTextField(50);
-		JButton searchButton = createButton("Search -->", 200, 20);
+		JButton resetButton = createButton("Reset Results", 150, 20);
+		JButton searchButton = createButton("Search -->", 150, 20);
 		
 		j.add(searchBar);
+		j.add(resetButton);
 		j.add(searchButton);
+
+		resetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				itemList.clear();
+				loadData(itemList, grabList);
+			}
+		});
 		
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String searchText = searchBar.getText();
-				ArrayList<String> matchedItems = new ArrayList<>();
-				for(String item : a) {
-					if(item.contains(searchText)) {
-						matchedItems.add(item);
+				List<Item> results = Library.searchItems(searchText, Library.items.size());
+
+				itemList.clear();
+
+				for (Item item : results) {
+					if(item.isSubscription() == false) {
+						itemList.addElement(item.name + " " + "(" + item.itemType + ") " + "(" + String.format("%.2f", item.cost) + ")");
 					}
 				}
-				
-				itemList.clear();
-				
-				for(String item : matchedItems) {
-					itemList.addElement(item);
-				}
 			}
 		});
 		
-		JList textblist=new JList<>(itemList);
-		textblist.setPreferredSize(new Dimension(900, 800));
-		JScrollPane textbooklist =new JScrollPane(textblist);
+		JList itemSelect = new JList<>(itemList);
+		itemSelect.setPreferredSize(new Dimension(900, 800));
+		JScrollPane itemsScroll =new JScrollPane(itemSelect);
 		
-		textbooklist.setPreferredSize(new Dimension(900,600));
-		j.add(textbooklist,BorderLayout.CENTER);
-		JFrame item =new JFrame("item");
-		JButton itemDetails = createButton("Get Item Details", 200, 50);
+		itemsScroll.setPreferredSize(new Dimension(900,600));
+		j.add(itemsScroll, BorderLayout.CENTER);
+
 		JButton addCart = createButton("Add To Cart", 200, 50);
 		
-		itemDetails.addActionListener(e ->{
-			String selectedbook=(String) textblist.getSelectedValue();
-			if (selectedbook != null){
-				openbookdetails(selectedbook,a);
+		addCart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String selectedItem = ((String) itemSelect.getSelectedValue());
+				addItemToCart(j, grabList, selectedItem);
 			}
 		});
 		
-		addCart.addActionListener(e ->{
-		});
-		
-		j.add(itemDetails,BorderLayout.CENTER);
 		j.add(addCart,BorderLayout.CENTER);
-				
+
 		return j;
-		
 	}
-	private void openbookdetails(String selectedbook,String a[]) {
-		JFrame bookdetails=new JFrame(selectedbook);
-		JPanel contentPanel= new JPanel(new BorderLayout());
-		JLabel booklabel = new JLabel("Details for " + selectedbook,SwingConstants.CENTER);
-		contentPanel.add(booklabel,BorderLayout.CENTER);
-		bookdetails.setLocationRelativeTo(null);
-        bookdetails.setResizable(false);
-		bookdetails.add(contentPanel);
-		bookdetails.setSize(800,800);
-		bookdetails.setVisible(true);
-		
+
+	private void loadData(DefaultListModel<String> itemList, HashMap<String, Item> storedList) {
+		for (Item item : Library.items) {
+			if(item.isSubscription() == false) {
+				String formatted = item.name + " " + "(" + item.itemType + ") " + "(" + String.format("%.2f", item.cost) + ")";
+				itemList.addElement(formatted);
+				storedList.put(formatted, item);
+			}
+		}
 	}
 	
 	private JTextField createTextField(int width) {
@@ -101,5 +112,37 @@ public class RentPhysItem {
         button.setFont(new Font("Arial", Font.PLAIN, 18));
         return button;
     }
+
+	private void addItemToCart(JPanel j, HashMap<String, Item> item, String key) {
+		boolean canRent = this.currentUser.rentItem(item.get(key));
+		if (canRent == true) {
+			this.currentUser.addToCart(item.get(key));
+			JOptionPane.showMessageDialog(j, "Item added to cart.", "Item Added", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else {
+			JOptionPane.showMessageDialog(j, "Reason: " + grabDenyReason(this.currentUser.rentalDenied), "Item Cannot Be Added", JOptionPane.OK_OPTION);
+		}
+
+		System.out.println(this.currentUser.userCart + " " + this.currentUser.cartTotal);
+	}
+
+	private String grabDenyReason(int rentalDenied) {
+		switch (rentalDenied) {
+			case 1: {
+				return "Too many items overdue!";
+			}
+			case 2: {
+				return "Item does not exist!";
+			}
+			case 3: {
+				return "Item has no available copies!";
+			}
+			case 4: {
+				return "You are over the rental item limit!";
+			}
+
+		}
+		return "Error";
+	}
 	
 }

@@ -1,5 +1,5 @@
 itemID,name,itemType,locationInLibrary,cost,statusType
-1000,To Kill a Mockingbirdr,BOOK,NORTH_SHELF,0.000000,ACTIVE
+1000,To Kill a Mockingbirdr,BOOK,NORTH_SHELF,5.000000,ACTIVE
 1001,The Catcher in the Rye,BOOK,SOUTH_SHELF,0.000000,ACTIVE
 1002,Of Mice and Men,BOOK,EAST_SHELF,0.000000,ACTIVE
 1003,Never Gonna Give You UP,CD,WEST_SHELF,0.000000,ACTIVE
