@@ -52,7 +52,7 @@ public class RentPhysItem {
 		
 		JList textblist=new JList<>(itemList);
 		textblist.setPreferredSize(new Dimension(900, 800));
-		JScrollPane textbooklist =new JScrollPane((textblist));
+		JScrollPane textbooklist =new JScrollPane(textblist);
 		
 		textbooklist.setPreferredSize(new Dimension(900,600));
 		j.add(textbooklist,BorderLayout.CENTER);
@@ -101,4 +101,5 @@ public class RentPhysItem {
         button.setFont(new Font("Arial", Font.PLAIN, 18));
         return button;
     }
+	
 }

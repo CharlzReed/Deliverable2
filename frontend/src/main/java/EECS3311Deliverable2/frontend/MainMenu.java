@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -32,6 +33,7 @@ import com.example.Library;
 import com.example.User;
 
 public class MainMenu {
+	private List<String> shoppingCart = new ArrayList<String>();
 	private JFrame window;
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel cardPanel = new JPanel(cardLayout);
@@ -112,12 +114,12 @@ public class MainMenu {
 
 	private JPanel createNavigationPanel() {
 		String[] features = {
-				"Home", "Rent Physical Item", "Virtual Textbook",
-				"Track Course Textbook", "Open Book Online",
-				"Subscribe to Newsletter", "Checkout Items",
-				"Request New Textbook"
-		}; // we can add more features here as required
-
+			"Home", "Rent Physical Item", "Access Virtual Textbook", 
+			"Track Course Textbook", "Open Book Online", 
+			"Subscribe to Newsletter", "Checkout Items", 
+			"Request New Textbook"
+		}; // we can add more features here as required 
+	
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -234,6 +236,11 @@ public class MainMenu {
 		else if (featureName == ("Rent Physical Item")) {
 			RentPhysItem rentPhysItem = new RentPhysItem();
 			return rentPhysItem.show(panel);
+		}
+		else if (featureName == ("Checkout Items")) {
+			CheckoutItems checkoutItems = new CheckoutItems();
+			checkoutItems.initializeCart(shoppingCart);
+			return checkoutItems.show(panel);
 		}
 		
 		return panel;
