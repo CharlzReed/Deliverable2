@@ -1,10 +1,25 @@
 package EECS3311Deliverable2.frontend;
 
-import java.awt.*;
-import java.io.IOException;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.example.CSVReader;
@@ -12,8 +27,6 @@ import com.example.Course;
 import com.example.Item;
 import com.example.Library;
 import com.example.User;
-
-import java.util.List;
 
 public class FacultyMainMenu extends JFrame {
     private User currentUser;
