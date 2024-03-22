@@ -1,5 +1,5 @@
 userID,name,email,password,userType,accountBalance
-2000,John,J.Smith@gmail.com,asdf1,VISITOR,6.370000
+2000,John,J.Smith@gmail.com,asdf1,VISITOR,0.850000
 2001,Tim,Timmy1@gmail.com,asdf2,VISITOR,35.640000
 2002,Jenny,Jenny1999@gmail.com,asdf3,STUDENT,23.010000
 2003,Creed,C.Bratton@gmail.com,asdf4,STUDENT,1817.550000

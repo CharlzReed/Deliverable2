@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.example.User;
+import com.example.DataManager;
 import com.example.CSVReader;
 
 public class CheckoutPayment {
@@ -108,6 +109,7 @@ public class CheckoutPayment {
 				if(isValid) {
 					JOptionPane.showMessageDialog(debitCreditPay, "Thank you for your purchase!", "Transaction Success", JOptionPane.INFORMATION_MESSAGE);
 					checkout.emptyCart();
+					DataManager.getInstance().saveData();
 					window.dispose();
 				}
 				else {
@@ -125,6 +127,7 @@ public class CheckoutPayment {
 					currentUser.accountBalance -= (currentUser.cartTotal * 1.13);
 					checkout.newBalance(currentUser.accountBalance);
 					checkout.emptyCart();
+					DataManager.getInstance().saveData();
 					window.dispose();
 				}
 				else {
