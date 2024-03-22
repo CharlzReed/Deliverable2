@@ -1,7 +1,7 @@
 package com.example;
 
 
-enum ItemType {
+public enum ItemType {
     BOOK,
     TEXTBOOK,
     MAGAZINE,

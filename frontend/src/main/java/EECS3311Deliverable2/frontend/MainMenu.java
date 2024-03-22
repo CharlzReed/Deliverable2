@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import com.example.Item;
 import com.example.Library;
 import com.example.User;
 
@@ -205,20 +206,23 @@ public class MainMenu {
 
 	private JPanel createFeatureCard(String featureName) {
 		JPanel panel = new JPanel();
-		if (null != featureName)
-			switch (featureName) {
-				case ("Open Book Online"):
-					OpenOnBook onlinebook = new OpenOnBook();
-					return onlinebook.show(panel);
-				case ("Request New Textbook"):
-					break;
-				case ("Virtual Textbook"):
-					VirtualTextbook virtualtextbook = new VirtualTextbook();
-					return virtualtextbook.show(panel);
-				default:
-					break;
-			}
+		if (featureName == ("Open Book Online")) {
 
+			OpenOnBook onlinebook = new OpenOnBook(currentUser.rentedItems);
+			return onlinebook.show(panel);
+		} else if (featureName == ("Virtual Textbook")) {
+			VirtualTextbook virtualtextbook = new VirtualTextbook(currentUser.rentedItems);
+			return virtualtextbook.show(panel);
+		}else if (featureName==("Subscribe to Newsletter")){
+			SubToNews news =new SubToNews(currentUser);
+			for(Item newsletter: news.getnewsletter()){
+				currentUser.addItem(newsletter);
+			}
+			return news.show(panel);
+		} else if (featureName == ("Request New Textbook")) {
+			
+			return panel;
+		}
 		return panel;
 	}
 

@@ -51,4 +51,16 @@ public class Item {
     public String csvFormat() {
         return String.format("%d,%s,%s,%s,%f,%s", itemID, name, itemType, locationInLibrary, cost, statusType);
     }
+    public ItemType getItemType(){
+        return this.itemType;
+    }
+    public String getname(){
+        return this.name;
+    }
+    public double getcost(){
+        return this.cost;
+    }
+    public StatusType getstatustype(){
+        return this.statusType;
+    }
 }
