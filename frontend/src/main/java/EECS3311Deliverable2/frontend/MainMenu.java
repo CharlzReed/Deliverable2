@@ -28,7 +28,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import com.example.Item;
 import com.example.Library;
 import com.example.User;
 
@@ -166,12 +165,9 @@ public class MainMenu {
 		return panel;
 	}
 
-
-
 	private void openAccountDetails() {
 		new AccountDetailsMenu(currentUser).setVisible(true);
 	}
-	
 
 	private void logout() {
 		int dialogResult = JOptionPane.showConfirmDialog(window,
@@ -244,18 +240,11 @@ public class MainMenu {
 	private JPanel createFeatureCard(String featureName) {
 		JPanel panel = new JPanel();
 		if (featureName == ("Open Book Online")) {
-
-			OpenOnBook onlinebook = new OpenOnBook(this.currentUser.getRentedItems());
-			return onlinebook.show(panel);
+			return new OpenOnBook(this.currentUser.getRentedItems()).show(panel);
 		} else if (featureName == ("Virtual Textbook")) {
-			VirtualTextbook virtualtextbook = new VirtualTextbook(this.currentUser.getRentedItems());
-			return virtualtextbook.show(panel);
+			return new VirtualTextbook(this.currentUser.getRentedItems()).show(panel);
 		} else if (featureName == ("Subscribe to Newsletter")) {
-			SubToNews news = new SubToNews(currentUser);
-			for (Item newsletter : news.getnewsletter()) {
-				currentUser.addItem(newsletter);
-			}
-			return news.show(panel);
+			return new SubToNews(this.currentUser).show(panel);
 		} else if (featureName == ("Request New Textbook")) {
 
 		} else if (featureName == ("Rent Physical Item")) {
@@ -280,6 +269,5 @@ public class MainMenu {
 		}
 		SwingUtilities.invokeLater(MainMenu::new);
 	}
-
 
 }
