@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Library {
@@ -135,6 +136,38 @@ public class Library {
         }
         return rentedItemsInfo;
     }
-    
 
+    public static List<Item> checkForNewEditions(Course course) {
+        Item currentTextbook = Library.course2textbook.get(course);
+        List<Item> newerEditions = new ArrayList<>();
+
+        for (Item item : Library.items) {
+
+            if (item.getName().startsWith(currentTextbook.getName())
+                    && !item.getName().equals(currentTextbook.getName())) {
+                newerEditions.add(item);
+            }
+        }
+
+        return newerEditions; 
+    }
+    public static String getNotification() {
+        StringBuilder notifications = new StringBuilder();
+        for (Map.Entry<Course, Item> entry : course2textbook.entrySet()) {
+            Course course = entry.getKey();
+            Item textbook = entry.getValue();
+
+            if (!textbook.isAvailable()) {
+                if (notifications.length() > 0) {
+                    notifications.append("\n");
+                }
+                notifications.append("Textbook for course ")
+                              .append(course.getCourseName())
+                              .append(" is not available.");
+            }
+        }
+        return notifications.toString();
+    }
 }
+
+

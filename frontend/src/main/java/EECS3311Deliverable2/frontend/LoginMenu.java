@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 
 import com.example.Library;
 import com.example.User;
+import com.example.UserType;
 
 public class LoginMenu {
 
@@ -72,7 +73,11 @@ public class LoginMenu {
                     }
                     if (loggedIn != null) {
                         window.dispose();
-                        new MainMenu(loggedIn).setVisible(true);
+                        if (loggedIn.getUserType() == UserType.FACULTY) {
+                            new FacultyMainMenu(loggedIn).setVisible(true);
+                        } else {
+                            new MainMenu(loggedIn).setVisible(true);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(window, "Invalid email or password.", "Login Failed",
                                 JOptionPane.ERROR_MESSAGE);

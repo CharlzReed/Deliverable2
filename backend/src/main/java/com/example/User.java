@@ -3,6 +3,7 @@ package com.example;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class User {
 
@@ -35,6 +36,10 @@ public class User {
 
     public UserType getUserType() {
         return this.userType;
+    }
+
+    public List<Course> getCourses() {
+        return this.courses;
     }
 
     // for adding items WITHOUT logging date. Used only when reconstructing the
