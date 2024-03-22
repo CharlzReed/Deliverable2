@@ -14,9 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.example.User;
 import com.example.DataManager;
-import com.example.CSVReader;
+import com.example.User;
 
 public class CheckoutPayment {
 	private JFrame window;
