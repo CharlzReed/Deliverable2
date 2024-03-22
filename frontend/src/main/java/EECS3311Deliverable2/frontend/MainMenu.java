@@ -190,7 +190,16 @@ public class MainMenu {
 		JButton button = new JButton(cardName);
 		button.setAlignmentX(Component.LEFT_ALIGNMENT);
 		button.setFocusable(false);
+		//added so it can open new window on button -addison
+		if (cardName=="Request New Textbook"){
+			button.addActionListener((ActionEvent e) -> {
+				new ReqNewTextbook(currentUser).show();
+			});
+		}else{
+
+		
 		button.addActionListener((ActionEvent e) -> cardLayout.show(cardPanel, cardName));
+		}
 		return button;
 	}
 
@@ -220,8 +229,7 @@ public class MainMenu {
 			}
 			return news.show(panel);
 		} else if (featureName == ("Request New Textbook")) {
-			
-			return panel;
+
 		}
 		return panel;
 	}

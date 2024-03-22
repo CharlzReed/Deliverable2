@@ -54,7 +54,7 @@ public class Library {
                 StatusType.PENDING_APPROVAL);
         addItem(tempItem);
     }
-
+    
     public static void processRequest(int numberOfRequests) {
         int i;
         for (i = 0; i < items.size(); i++) {
