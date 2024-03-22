@@ -10,7 +10,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -36,6 +38,7 @@ public class MainMenu {
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel cardPanel = new JPanel(cardLayout);
 	private User currentUser;
+	private CheckoutItems checkoutUpdate;
 	private static final Color backgroundColor = new Color(245, 245, 245);
 	private static final Color buttonColor = new Color(220, 220, 220);
 	private static final Color textColor = new Color(50, 50, 50);
@@ -112,18 +115,24 @@ public class MainMenu {
 
 	private JPanel createNavigationPanel() {
 		String[] features = {
-				"Home", "Rent Physical Item", "Virtual Textbook",
-				"Track Course Textbook", "Open Book Online",
-				"Subscribe to Newsletter", "Checkout Items",
-				"Request New Textbook"
-		}; // we can add more features here as required
-
+			"Home", "Rent Physical Item", "Virtual Textbook", 
+			"Track Course Textbook", "Open Book Online", 
+			"Subscribe to Newsletter", "Checkout Items", 
+			"Request New Textbook"
+		}; // we can add more features here as required 
+	
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		for (String feature : features) {
 			JButton button = createNavButton(feature);
+
+			//When checkout items is clicked on, everything gets refreshed so cart shows
+			if(feature.equals("Checkout Items")) {
+				button.addActionListener((ActionEvent e) -> this.checkoutUpdate.refresh());
+			}
+
 			button.setMaximumSize(new Dimension(Integer.MAX_VALUE, button.getMinimumSize().height));
 			panel.add(button);
 			panel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -231,6 +240,14 @@ public class MainMenu {
 		} else if (featureName == ("Request New Textbook")) {
 
 		}
+		else if (featureName == ("Rent Physical Item")) {
+			new RentPhysItem(panel, this.currentUser);
+		}
+		else if (featureName == ("Checkout Items")) {
+			this.checkoutUpdate = new CheckoutItems(panel, this.currentUser);
+			this.checkoutUpdate.show(panel);
+		}
+		
 		return panel;
 	}
 
