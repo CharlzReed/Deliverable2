@@ -18,6 +18,9 @@ public class Course {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+    public String getCourseName() {
+        return this.courseName;
+    }
 
     @Override
     public String toString() {
