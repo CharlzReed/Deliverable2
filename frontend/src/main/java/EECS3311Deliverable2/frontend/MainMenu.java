@@ -18,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -61,7 +62,6 @@ public class MainMenu {
 		rentedItemsPanel.setLayout(new BoxLayout(rentedItemsPanel, BoxLayout.Y_AXIS));
 		rentedItemsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Currently Rented Hardcover Books:"));
 
-		// Scroll pane for overflow of items
 		JScrollPane scrollPane = new JScrollPane(rentedItemsPanel);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
@@ -88,7 +88,7 @@ public class MainMenu {
 			}
 		}
 
-		return scrollPane; // Return the scroll pane instead of the panel
+		return scrollPane;
 	}
 
 	private void show() {
@@ -154,6 +154,9 @@ public class MainMenu {
 		JButton accountDetailsButton = createButton("Account Details");
 		JButton logoutButton = createButton("Logout");
 
+		accountDetailsButton.addActionListener(e -> openAccountDetails());
+		logoutButton.addActionListener(e -> logout());
+
 		buttonsPanel.add(accountDetailsButton);
 		buttonsPanel.add(logoutButton);
 
@@ -161,6 +164,25 @@ public class MainMenu {
 		panel.add(buttonsPanel, BorderLayout.EAST);
 
 		return panel;
+	}
+
+
+
+	private void openAccountDetails() {
+		new AccountDetailsMenu(currentUser).setVisible(true);
+	}
+	
+
+	private void logout() {
+		int dialogResult = JOptionPane.showConfirmDialog(window,
+				"Are you sure you want to logout?",
+				"Logout Confirmation",
+				JOptionPane.YES_NO_OPTION);
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			JOptionPane.showMessageDialog(window, "Successfully logged out.");
+			new MainWindow().setVisible(true);
+			window.dispose();
+		}
 	}
 
 	private void setupCardPanel() {
@@ -258,4 +280,6 @@ public class MainMenu {
 		}
 		SwingUtilities.invokeLater(MainMenu::new);
 	}
+
+
 }

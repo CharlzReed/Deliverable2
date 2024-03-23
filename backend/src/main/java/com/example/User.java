@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class User {
 
     private final int userID;
-    private final String name;
+    private String name;
     private String email;
     private String password;
     private UserType userType;
@@ -270,6 +270,8 @@ public class User {
         return courses;
     }
 
-    
+    public String getAccountType() {
+        return userType.toString();
+    }
 
 }
