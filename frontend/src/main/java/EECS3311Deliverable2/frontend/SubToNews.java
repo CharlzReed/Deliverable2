@@ -28,7 +28,7 @@ public class SubToNews {
     User user;
 
     public SubToNews(User user) {
-        this.currentnews = user.rentedItems;
+        this.currentnews = user.getRentedItems();
         this.user = user;
     }
 
@@ -67,7 +67,8 @@ public class SubToNews {
         searchButton.setPreferredSize(new Dimension(150, 20));
         searchButton.addActionListener(e -> {
             String searchbarstring = searchField.getText();
-            List<Item> searched = Library.searchItems(searchbarstring, Library.items.size());
+            List<Item> searched = Library.getInstance().searchItems(searchbarstring,
+                    Library.getInstance().getItems().size());
             booklist.clear();
             ownedlist1.clear();
             for (Item item : searched) {
@@ -91,7 +92,7 @@ public class SubToNews {
         unsubscribe.addActionListener(e -> {
             String selectedbook = (String) owned.getSelectedValue();
             Item selecteditem = grabListowned.get(selectedbook);
-            user.rentedItems.remove(selecteditem);
+            user.getRentedItems().remove(selecteditem);
             currentnews.remove(selecteditem);
             ownedlist1.removeElement(selectedbook);
             booklist.addElement(selectedbook);
@@ -132,7 +133,7 @@ public class SubToNews {
 
     private void loadData(DefaultListModel<String> items123, HashMap<String, Item> list,
             DefaultListModel<String> itemsowned, HashMap<String, Item> ownedlist) {
-        for (Item item : Library.items) {
+        for (Item item : Library.getInstance().getItems()) {
             if (!currentnews.contains(item) && (item.getItemType() == ItemType.SUBSCRIPTION)) {
                 String formatted = item.name + " " + "(" + item.itemType + ") " + "(" + String.format("%.2f", item.cost)
                         + ")";

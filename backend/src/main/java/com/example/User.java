@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class User {
+public class User {
 
     private final int userID;
     private final String name;
@@ -12,8 +12,14 @@ class User {
     private String password;
     private UserType userType;
     private double accountBalance;
+    // Added cartTotal for total cost for what user has in cart -Moses
+    public double cartTotal;
+    // Added choice for denial message, 1-4 for each cause. -Moses
+    public int rentalDenied;
     private ArrayList<Course> courses;
     private ArrayList<Item> rentedItems;
+    // Added userCart in order to store what user wants to buy -Moses
+    public ArrayList<Item> userCart;
     private HashMap<Item, LocalDate> rentLog;
 
     private User(UserBuilder builder) {
@@ -22,9 +28,15 @@ class User {
         this.email = builder.email;
         this.password = builder.password;
         this.userType = builder.userType;
+        // Initialized in constructor but does not need any parameter addition -Moses
+        this.cartTotal = 0.00;
+        // Initialized in constuctor but does not need any parameter addition -Moses
+        this.rentalDenied = 0;
         this.accountBalance = builder.accountBalance;
         this.courses = new ArrayList<>();
         this.rentedItems = new ArrayList<>();
+        // Initialized in constructor but does not need any parameter addition -Moses
+        this.userCart = new ArrayList<>();
         this.rentLog = new HashMap<>();
     }
 
@@ -168,16 +180,22 @@ class User {
         return (int) daysOverdue;
     }
 
-    public void checkForOverdueItems(){
-        for(Item item : rentedItems){
-            if(daysOverdue(item) > 0){
+    public void checkForOverdueItems() {
+        for (Item item : rentedItems) {
+            if (daysOverdue(item) > 0) {
                 OverdueEvent event = new OverdueEvent(item, this);
                 notifyOverdueListeners(event);
             }
         }
     }
 
-    private void notifyOverdueListeners(OverdueEvent event){
+    // Added add to cart for user to keep track of what user wants to buy -Moses
+    public void addToCart(Item item) {
+        this.userCart.add(item);
+        this.cartTotal += item.cost;
+    }
+
+    private void notifyOverdueListeners(OverdueEvent event) {
         Library.getInstance().notifyOverdueListeners(event);
     }
 
@@ -228,6 +246,10 @@ class User {
         return userType;
     }
 
+    public void setAccountBalance(double balance) {
+        this.accountBalance = balance;
+    }
+
     public double getAccountBalance() {
         return accountBalance;
     }
@@ -240,7 +262,14 @@ class User {
         return rentedItems;
     }
 
+    public void deductFromBalance(double amount) {
+        this.accountBalance -= amount;
+    }
+
     public ArrayList<Course> getCourses() {
         return courses;
     }
+
+    
+
 }

@@ -54,7 +54,8 @@ public class RentPhysItem {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String searchText = searchBar.getText();
-				List<Item> results = Library.searchItems(searchText, Library.items.size());
+				List<Item> results = Library.getInstance().searchItems(searchText,
+						Library.getInstance().getItems().size());
 
 				itemList.clear();
 
@@ -89,7 +90,7 @@ public class RentPhysItem {
 	}
 
 	private void loadData(DefaultListModel<String> itemList, HashMap<String, Item> storedList) {
-		for (Item item : Library.items) {
+		for (Item item : Library.getInstance().getItems()) {
 			if (item.isSubscription() == false) {
 				String formatted = item.name + " " + "(" + item.itemType + ") " + "(" + String.format("%.2f", item.cost)
 						+ ")";

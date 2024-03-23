@@ -48,7 +48,8 @@ public class VirtualTextbook {
 
 		searchButton.addActionListener(e -> {
 			String searchbarstring = searchField.getText();
-			List<Item> searched = Library.searchItems(searchbarstring, Library.items.size());
+			List<Item> searched = Library.getInstance().searchItems(searchbarstring,
+					Library.getInstance().getItems().size());
 			ownedlist1.clear();
 			for (Item item : searched) {
 				if (item.getItemType() == ItemType.TEXTBOOK && items.contains(item)) {
@@ -90,7 +91,7 @@ public class VirtualTextbook {
 	}
 
 	private void loadData(DefaultListModel<String> items123, HashMap<String, Item> list) {
-		for (Item item : Library.items) {
+		for (Item item : Library.getInstance().getItems()) {
 			if (items.contains(item) && (item.getItemType() == (ItemType.TEXTBOOK))) {
 				String formatted = item.name + " " + "(" + item.itemType + ") ";
 				items123.addElement(formatted);

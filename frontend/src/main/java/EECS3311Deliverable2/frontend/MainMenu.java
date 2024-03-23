@@ -65,7 +65,7 @@ public class MainMenu {
 		JScrollPane scrollPane = new JScrollPane(rentedItemsPanel);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-		List<String> rentedItems = Library.getUserRentedItemsWithDueDates(currentUser.userID);
+		List<String> rentedItems = Library.getUserRentedItemsWithDueDates(this.currentUser.getUserID());
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate today = LocalDate.now();
 
@@ -113,12 +113,12 @@ public class MainMenu {
 
 	private JPanel createNavigationPanel() {
 		String[] features = {
-			"Home", "Rent Physical Item", "Virtual Textbook", 
-			"Track Course Textbook", "Open Book Online", 
-			"Subscribe to Newsletter", "Checkout Items", 
-			"Request New Textbook"
-		}; // we can add more features here as required 
-	
+				"Home", "Rent Physical Item", "Virtual Textbook",
+				"Track Course Textbook", "Open Book Online",
+				"Subscribe to Newsletter", "Checkout Items",
+				"Request New Textbook"
+		}; // we can add more features here as required
+
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -126,8 +126,8 @@ public class MainMenu {
 		for (String feature : features) {
 			JButton button = createNavButton(feature);
 
-			//When checkout items is clicked on, everything gets refreshed so cart shows
-			if(feature.equals("Checkout Items")) {
+			// When checkout items is clicked on, everything gets refreshed so cart shows
+			if (feature.equals("Checkout Items")) {
 				button.addActionListener((ActionEvent e) -> this.checkoutUpdate.refresh());
 			}
 
@@ -197,15 +197,14 @@ public class MainMenu {
 		JButton button = new JButton(cardName);
 		button.setAlignmentX(Component.LEFT_ALIGNMENT);
 		button.setFocusable(false);
-		//added so it can open new window on button -addison
-		if (cardName=="Request New Textbook"){
+		// added so it can open new window on button -addison
+		if (cardName == "Request New Textbook") {
 			button.addActionListener((ActionEvent e) -> {
 				new ReqNewTextbook(currentUser).show();
 			});
-		}else{
+		} else {
 
-		
-		button.addActionListener((ActionEvent e) -> cardLayout.show(cardPanel, cardName));
+			button.addActionListener((ActionEvent e) -> cardLayout.show(cardPanel, cardName));
 		}
 		return button;
 	}
@@ -224,28 +223,26 @@ public class MainMenu {
 		JPanel panel = new JPanel();
 		if (featureName == ("Open Book Online")) {
 
-			OpenOnBook onlinebook = new OpenOnBook(currentUser.rentedItems);
+			OpenOnBook onlinebook = new OpenOnBook(this.currentUser.getRentedItems());
 			return onlinebook.show(panel);
 		} else if (featureName == ("Virtual Textbook")) {
-			VirtualTextbook virtualtextbook = new VirtualTextbook(currentUser.rentedItems);
+			VirtualTextbook virtualtextbook = new VirtualTextbook(this.currentUser.getRentedItems());
 			return virtualtextbook.show(panel);
-		}else if (featureName==("Subscribe to Newsletter")){
-			SubToNews news =new SubToNews(currentUser);
-			for(Item newsletter: news.getnewsletter()){
+		} else if (featureName == ("Subscribe to Newsletter")) {
+			SubToNews news = new SubToNews(currentUser);
+			for (Item newsletter : news.getnewsletter()) {
 				currentUser.addItem(newsletter);
 			}
 			return news.show(panel);
 		} else if (featureName == ("Request New Textbook")) {
 
-		}
-		else if (featureName == ("Rent Physical Item")) {
+		} else if (featureName == ("Rent Physical Item")) {
 			new RentPhysItem(panel, this.currentUser);
-		}
-		else if (featureName == ("Checkout Items")) {
+		} else if (featureName == ("Checkout Items")) {
 			this.checkoutUpdate = new CheckoutItems(panel, this.currentUser);
 			this.checkoutUpdate.show(panel);
 		}
-		
+
 		return panel;
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 //Singleton
@@ -32,7 +33,7 @@ public class Library implements Subject {
         return instance;
     }
 
-    public int generateRandomNumber() {
+    public static int generateRandomNumber() {
         Random rand = new Random();
         return rand.nextInt(9000) + 1000;
     }
@@ -46,11 +47,13 @@ public class Library implements Subject {
         notifyObservers(item);
     }
 
-    public void addUser(User user) {
-        if (noDupes.contains(user.getUserID()))
-            return;
-        users.add(user);
-        noDupes.add(user.getUserID());
+    private void addUser(User user) {
+        if (!noDupes.contains(user.getUserID())) {
+            users.add(user);
+            noDupes.add(user.getUserID());
+        } else {
+            System.out.println("User ID " + user.getUserID() + " already exists.");
+        }
     }
 
     public void registerNewUser(int userID, String name, String email, String password, UserType userType,
@@ -104,7 +107,7 @@ public class Library implements Subject {
             }
         }
     }
-    
+
     public boolean findUser(User user) {
         for (User u : users) {
             if (u.getUserID() == user.getUserID()) {
@@ -159,62 +162,62 @@ public class Library implements Subject {
         return retval;
     }
 
-    // public static int generateNextUserId() {
-    //     int userId = generateRandomNumber();
-    //     while (noDupes.contains(userId)) {
-    //         userId = generateRandomNumber();
-    //     }
-    //     return userId;
-    // }
+    public static int generateNextUserId() {
+        Library libraryInstance = getInstance();
+        int userId = generateRandomNumber();
+        while (libraryInstance.noDupes.contains(userId)) {
+            userId = generateRandomNumber();
+        }
+        return userId;
+    }
 
-    // public static List<String> getUserRentedItemsWithDueDates(int userId) {
-    //     List<String> rentedItemsInfo = new ArrayList<>();
-    //     for (User user : users) {
-    //         if (user.userID == userId) {
-    //             user.rentLog.forEach((item, dueDate) -> {
-    //                 // Check if the item is a hardcover book
-    //                 if (item.itemType == ItemType.BOOK) {
-    //                     String info = String.format("Name: %s, Due Date: %s", item.name, dueDate.toString());
-    //                     rentedItemsInfo.add(info);
-    //                 }
-    //             });
-    //             break;
-    //         }
-    //     }
-    //     return rentedItemsInfo;
-    // }
+    public static List<String> getUserRentedItemsWithDueDates(int userId) {
+        List<String> rentedItemsInfo = new ArrayList<>();
+        for (User user : getInstance().getUsers()) {
+            if (user.getUserID() == userId) {
+                user.getRentLog().forEach((item, dueDate) -> {
+                    if (item.getItemType() == ItemType.BOOK) {
+                        String info = String.format("Name: %s, Due Date: %s", item.getName(), dueDate.toString());
+                        rentedItemsInfo.add(info);
+                    }
+                });
+                break;
+            }
+        }
+        return rentedItemsInfo;
+    }
 
-    // public static List<Item> checkForNewEditions(Course course) {
-    //     Item currentTextbook = Library.course2textbook.get(course);
-    //     List<Item> newerEditions = new ArrayList<>();
+    public static Map<Course, Item> getCourseTextbooks() {
+        return getInstance().course2textbook;
+    }
 
-    //     for (Item item : Library.items) {
+    public static List<Item> checkForNewEditions(Course course) {
+        List<Item> newerEditions = new ArrayList<>();
+        Item currentTextbook = getCourseTextbooks().get(course);
+        for (Item item : getInstance().getItems()) {
+            if (item.getName().startsWith(currentTextbook.getName())
+                    && !item.getName().equals(currentTextbook.getName())) {
+                newerEditions.add(item);
+            }
+        }
+        return newerEditions;
+    }
 
-    //         if (item.getName().startsWith(currentTextbook.getName())
-    //                 && !item.getName().equals(currentTextbook.getName())) {
-    //             newerEditions.add(item);
-    //         }
-    //     }
-
-    //     return newerEditions; 
-    // }
-    // public static String getNotification() {
-    //     StringBuilder notifications = new StringBuilder();
-    //     for (Map.Entry<Course, Item> entry : course2textbook.entrySet()) {
-    //         Course course = entry.getKey();
-    //         Item textbook = entry.getValue();
-
-    //         if (!textbook.isAvailable()) {
-    //             if (notifications.length() > 0) {
-    //                 notifications.append("\n");
-    //             }
-    //             notifications.append("Textbook for course ")
-    //                           .append(course.getCourseName())
-    //                           .append(" is not available.");
-    //         }
-    //     }
-    //     return notifications.toString();
-    // }
+    public static String getNotification() {
+        StringBuilder notifications = new StringBuilder();
+        for (Map.Entry<Course, Item> entry : getCourseTextbooks().entrySet()) {
+            Course course = entry.getKey();
+            Item textbook = entry.getValue();
+            if (getInstance().getCopiesAvailable().getOrDefault(textbook, 0) <= 0) {
+                if (notifications.length() > 0) {
+                    notifications.append("\n");
+                }
+                notifications.append("Textbook for course ").append(course.getCourseName())
+                        .append(" is not available.");
+            }
+        }
+        return notifications.toString();
+    }
 
     public HashMap<Item, Integer> getCopiesAvailable() {
         return new HashMap<>(copiesAvailable);
@@ -267,7 +270,6 @@ public class Library implements Subject {
         return new ArrayList<>(courses);
     }
 
-    
     public void addOverdueListener(OverdueListener listener) {
         overdueListeners.add(listener);
     }
@@ -280,5 +282,9 @@ public class Library implements Subject {
         for (OverdueListener listener : overdueListeners) {
             listener.onOverdueItem(event);
         }
+    }
+
+    public synchronized void addUserSafely(User user) {
+        addUser(user);
     }
 }

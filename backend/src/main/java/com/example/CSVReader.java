@@ -154,7 +154,7 @@ public class CSVReader {
                         .accountBalance(accountBalance)
                         .build();
 
-                library.addUser(user);
+                library.addUserSafely(user);
             }
         }
     }

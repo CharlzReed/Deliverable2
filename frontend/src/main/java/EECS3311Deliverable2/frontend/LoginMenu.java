@@ -64,8 +64,8 @@ public class LoginMenu {
 
                 try {
                     User loggedIn = null;
-                    for (User user : Library.users) {
-                        if (user.email.toLowerCase().equals(email) && user.password.equals(password)) {
+                    for (User user : Library.getInstance().getUsers()) {
+                        if (user.getEmail().toLowerCase().equals(email) && user.getPassword().equals(password)) {
                             JOptionPane.showMessageDialog(window, "Login Successful!");
                             loggedIn = user;
                             break;

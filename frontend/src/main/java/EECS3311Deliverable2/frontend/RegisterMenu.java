@@ -138,7 +138,12 @@ public class RegisterMenu {
 				int userId = Library.generateNextUserId(); // to generate a unique id for sure
 				double accountBalance = 20.0; // default balance for new users
 
-				User newUser = new User(userId, name, email, password, type, accountBalance);
+				User newUser = new User.UserBuilder(userId, name)
+						.email(email)
+						.password(password)
+						.userType(type)
+						.accountBalance(accountBalance)
+						.build();
 
 				try {
 					DataManager.getInstance().registerNewUser(newUser);

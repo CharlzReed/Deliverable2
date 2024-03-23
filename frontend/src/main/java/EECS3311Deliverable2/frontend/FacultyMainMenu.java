@@ -27,6 +27,7 @@ import com.example.Course;
 import com.example.Item;
 import com.example.Library;
 import com.example.User;
+import com.example.Subject;
 
 public class FacultyMainMenu extends JFrame {
     private User currentUser;
@@ -125,7 +126,7 @@ public class FacultyMainMenu extends JFrame {
 
         StringBuilder textbooksText = new StringBuilder();
         for (Course course : currentUser.getCourses()) {
-            Item textbook = Library.course2textbook.get(course);
+            Item textbook = Library.getInstance().getCourse2textbook().get(course);
             textbooksText.append("For \"").append(course.courseName).append("\" the textbook is: ")
                     .append(textbook.name).append("\n");
         }
@@ -150,7 +151,7 @@ public class FacultyMainMenu extends JFrame {
                         + newEdition.getName() + " (" + newEdition.getEdition() + ")");
                 JButton updateButton = new JButton("Update to this edition");
                 updateButton.addActionListener(e -> {
-                    Library.course2textbook.put(course, newEdition);
+                    Library.getInstance().getCourse2textbook().put(course, newEdition);
                     JOptionPane.showMessageDialog(FacultyMainMenu.this,
                             "Textbook for " + course.getCourseName() + " updated to " + newEdition.getName(),
                             "Update Successful", JOptionPane.INFORMATION_MESSAGE);
