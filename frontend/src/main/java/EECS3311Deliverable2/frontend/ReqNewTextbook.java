@@ -63,12 +63,12 @@ public class ReqNewTextbook {
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String searchText = searchBar.getText();
-                List<Item> results = Library.searchItems(searchText, Library.items.size());
-
+                List<Item> results = Library.getInstance().searchItems(searchText,
+                        Library.getInstance().getItems().size());
                 items.clear();
 
                 for (Item item : results) {
-                    if (!currentUser.rentedItems.contains(item) && item.getItemType() == ItemType.TEXTBOOK) {
+                    if (!currentUser.getRentedItems().contains(item) && item.getItemType() == ItemType.TEXTBOOK) {
                         items.addElement(item.name + " " + "(" + item.itemType + ") " + "("
                                 + String.format("%.2f", item.cost) + ")");
                     }
@@ -98,7 +98,8 @@ public class ReqNewTextbook {
         requestButton.addActionListener(e -> {
             String selectedbook = (String) itemselection.getSelectedValue();
             Item selecteditem = grablist.get(selectedbook);
-            Library.requestItem(selecteditem.getname(), selecteditem.getItemType(), selecteditem.getlocationInLibrary(),
+            Library.getInstance().requestItem(selecteditem.getname(), selecteditem.getItemType(),
+                    selecteditem.getlocationInLibrary(),
                     selecteditem.getcost());
             items.removeElement(selectedbook);
             grablist.remove(selectedbook);
@@ -118,8 +119,8 @@ public class ReqNewTextbook {
     }
 
     private void loadData(DefaultListModel<String> items123, HashMap<String, Item> list) {
-        for (Item item : Library.items) {
-            if (!currentUser.rentedItems.contains(item) && (item.getItemType() == ItemType.TEXTBOOK)) {
+        for (Item item : Library.getInstance().getItems()) {
+            if (!currentUser.getRentedItems().contains(item) && (item.getItemType() == ItemType.TEXTBOOK)) {
                 String formatted = item.name + " " + "(" + item.itemType + ") " + "(" + String.format("%.2f", item.cost)
                         + ")";
                 items123.addElement(formatted);

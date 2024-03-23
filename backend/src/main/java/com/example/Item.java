@@ -1,14 +1,17 @@
 package com.example;
 
 public class Item {
+
     public int itemID;
     public String name;
     public ItemType itemType;
     public LocationType locationInLibrary;
     public double cost;
     public StatusType statusType;
+    private ItemContext context;
     private String edition;
     private boolean isAvailable;
+    private DiscountStrategy discount = new NoDiscountStrategy();
 
     public Item(int id, String name, ItemType itemType, LocationType location, double cost, StatusType statusType) {
         this.itemID = id;
@@ -19,37 +22,38 @@ public class Item {
         this.statusType = statusType;
         this.edition = "";
         this.isAvailable = true;
-    }
-
-    public String getName() {
-        return this.name;
+        this.context = new ItemContext(this);
     }
 
     public String getEdition() {
         return edition;
     }
 
-    public void setEdition(String edition) {
-        this.edition = edition;
-    }
-
     public boolean isAvailable() {
         return isAvailable;
     }
 
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public ItemContext getContext() {
+        return context;
     }
 
     @Override
     public String toString() {
-        return String.format(
-                "(itemID=%d, name=%s, itemType=%s, location=%s, cost=%f, statusType=%s, edition=%s, available=%s)",
-                itemID, name, itemType, locationInLibrary, cost, statusType, edition, isAvailable);
+        return String.format("(itemID=%d,  name=%s,  itemType=%s,  location=%s,  cost=%f,   statusType=%s)", itemID,
+                name, itemType, locationInLibrary, cost, statusType);
     }
 
     public String csvFormat() {
         return String.format("%d,%s,%s,%s,%f,%s", itemID, name, itemType, locationInLibrary, cost, statusType);
+
+    }
+
+    public void applyDiscountStrategy(DiscountStrategy discountStrategy) {
+        this.discount = discountStrategy;
+    }
+
+    public double getCostAfterDiscount() {
+        return discount.applyDiscount(cost);
     }
 
     // addison
@@ -85,6 +89,10 @@ public class Item {
         }
 
         return false;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
 }

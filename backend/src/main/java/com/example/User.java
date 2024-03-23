@@ -3,88 +3,109 @@ package com.example;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class User {
 
-    public int userID;
-    public String name;
-    public String email;
-    public String password;
-    public UserType userType;
-    public double accountBalance;
-    //Added cartTotal for total cost for what user has in cart -Moses 
+    private final int userID;
+    private final String name;
+    private String email;
+    private String password;
+    private UserType userType;
+    private double accountBalance;
+    // Added cartTotal for total cost for what user has in cart -Moses
     public double cartTotal;
-    //Added choice for denial message, 1-4 for each cause. -Moses
+    // Added choice for denial message, 1-4 for each cause. -Moses
     public int rentalDenied;
-
-    public ArrayList<Course> courses;
-    public ArrayList<Item> rentedItems;
-    //Added userCart in order to store what user wants to buy -Moses
+    private ArrayList<Course> courses;
+    private ArrayList<Item> rentedItems;
+    // Added userCart in order to store what user wants to buy -Moses
     public ArrayList<Item> userCart;
-    public HashMap<Item, LocalDate> rentLog;
+    private HashMap<Item, LocalDate> rentLog;
 
-    public User(int id, String name, String email, String password, UserType userType, double accountBalance) {
-        this.userID = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.userType = userType;
-        this.accountBalance = accountBalance;
-        //Initialized in constructor but does not need any parameter addition -Moses
+    private User(UserBuilder builder) {
+        this.userID = builder.userID;
+        this.name = builder.name;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.userType = builder.userType;
+        // Initialized in constructor but does not need any parameter addition -Moses
         this.cartTotal = 0.00;
-        //Initialized in constuctor but does not need any parameter addition -Moses
+        // Initialized in constuctor but does not need any parameter addition -Moses
         this.rentalDenied = 0;
+        this.accountBalance = builder.accountBalance;
         this.courses = new ArrayList<>();
         this.rentedItems = new ArrayList<>();
-        //Initialized in constructor but does not need any parameter addition -Moses
+        // Initialized in constructor but does not need any parameter addition -Moses
         this.userCart = new ArrayList<>();
         this.rentLog = new HashMap<>();
     }
 
-    public String getName() {
-        return this.name;
-    }
+    public static class UserBuilder {
+        private final int userID;
+        private final String name;
+        private String email;
+        private String password;
+        private UserType userType;
+        private double accountBalance = 0; // Default value
 
-    public UserType getUserType() {
-        return this.userType;
-    }
+        public UserBuilder(int userID, String name) {
+            this.userID = userID;
+            this.name = name;
+        }
 
-    public List<Course> getCourses() {
-        return this.courses;
+        public UserBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserBuilder userType(UserType userType) {
+            this.userType = userType;
+            return this;
+        }
+
+        public UserBuilder accountBalance(double accountBalance) {
+            this.accountBalance = accountBalance;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 
     // for adding items WITHOUT logging date. Used only when reconstructing the
     // objects.
     public boolean addItem(Item item) {
 
-        if (threeOverDue()) {
-            this.rentalDenied = 1;
+        if (threeOverDue())
             return false;
-        }
-        if (!Library.copiesAvailable.containsKey(item)) {
-            this.rentalDenied = 2;
+
+        if (!Library.getInstance().getCopiesAvailable().containsKey(item)) {
             System.out.println("Item doesnt exist");
             return false;
         }
-        if (Library.copiesAvailable.get(item) <= 0) {
-            this.rentalDenied = 3;
+        if (Library.getInstance().getCopiesAvailable().get(item) <= 0) {
             System.out.println("Item has too many copies in use");
             return false;
         }
         if (rentedItems.size() >= 10) {
-            this.rentalDenied = 4;
             System.out.println("You have too many items being rented");
             return false;
         }
-        // if (accountBalance < item.cost) {
-        //     System.out.println("You have too many items being rented");
-        //     return false;
-        // }
+        if (accountBalance < item.cost) {
+            System.out.println("You have too many items being rented");
+            return false;
+        }
 
         rentedItems.add(item);
         if (item.itemType != ItemType.SUBSCRIPTION) {
-            Library.copiesAvailable.put(item, Library.copiesAvailable.get(item) - 1);
+            Library.getInstance().getCopiesAvailable().put(item,
+                    Library.getInstance().getCopiesAvailable().get(item) - 1);
         }
         return true;
     }
@@ -92,36 +113,33 @@ public class User {
     // for adding items WITH logging date. Used when renting new item.
     public boolean rentItem(Item item) {
 
-        if (threeOverDue()) {
-            this.rentalDenied = 1;
+        if (threeOverDue())
             return false;
-        }
-        if (!Library.copiesAvailable.containsKey(item)) {
-            this.rentalDenied = 2;
+
+        if (!Library.getInstance().getCopiesAvailable().containsKey(item)) {
             System.out.println("Item doesnt exist");
             return false;
         }
-        if (Library.copiesAvailable.get(item) <= 0) {
-            this.rentalDenied = 3;
+        if (Library.getInstance().getCopiesAvailable().get(item) <= 0) {
             System.out.println("Item has too many copies in use");
             return false;
         }
         if (rentedItems.size() >= 10) {
-            this.rentalDenied = 4;
             System.out.println("You have too many items being rented");
             return false;
         }
-        // if (accountBalance < item.cost) {
-        //     System.out.println("You have too many items being rented");
-        //     return false;
-        // }
+        if (accountBalance < item.cost) {
+            System.out.println("You have too many items being rented");
+            return false;
+        }
 
         rentedItems.add(item);
         rentLog.put(item, LocalDate.now());
         if (item.itemType != ItemType.SUBSCRIPTION) {
-            Library.copiesAvailable.put(item, Library.copiesAvailable.get(item) - 1);
+            Library.getInstance().getCopiesAvailable().put(item,
+                    Library.getInstance().getCopiesAvailable().get(item) - 1);
         }
-        // this.accountBalance -= item.cost;
+        this.accountBalance -= item.cost;
         return true;
     }
 
@@ -130,7 +148,8 @@ public class User {
         rentedItems.remove(item);
         rentLog.remove(item);
         if (item.itemType != ItemType.SUBSCRIPTION) {
-            Library.copiesAvailable.put(item, Library.copiesAvailable.get(item) + 1);
+            Library.getInstance().getCopiesAvailable().put(item,
+                    Library.getInstance().getCopiesAvailable().get(item) + 1);
         }
     }
 
@@ -141,8 +160,9 @@ public class User {
             // System.out.println("Course added successfully.");
         } else {
             System.out.println("Cannot add course. Current date is not between the start and end dates of the course.");
-            returnItem(Library.course2textbook.get(course)); // Remove the textbook from the rented items since the
-                                                             // course is over
+            returnItem(Library.getInstance().getCourse2textbook().get(course)); // Remove the textbook from the rented
+                                                                                // items since the
+            // course is over
         }
     }
 
@@ -152,9 +172,31 @@ public class User {
 
     public int daysOverdue(Item item) {
         LocalDate dueDate = rentLog.get(item);
+        if (dueDate == null) {
+            return 0;
+        }
         long daysOverdue = LocalDate.now().toEpochDay() - dueDate.toEpochDay() - 30;
         daysOverdue = (daysOverdue < 0) ? 0 : daysOverdue;
         return (int) daysOverdue;
+    }
+
+    public void checkForOverdueItems() {
+        for (Item item : rentedItems) {
+            if (daysOverdue(item) > 0) {
+                OverdueEvent event = new OverdueEvent(item, this);
+                notifyOverdueListeners(event);
+            }
+        }
+    }
+
+    // Added add to cart for user to keep track of what user wants to buy -Moses
+    public void addToCart(Item item) {
+        this.userCart.add(item);
+        this.cartTotal += item.cost;
+    }
+
+    private void notifyOverdueListeners(OverdueEvent event) {
+        Library.getInstance().notifyOverdueListeners(event);
     }
 
     private boolean threeOverDue() {
@@ -184,10 +226,50 @@ public class User {
         return String.format("%d,%s,%s,%s,%s,%f", userID, name, email, password, userType, accountBalance);
     }
 
-    //Added add to cart for user to keep track of what user wants to buy -Moses
-    public void addToCart(Item item) {
-        this.userCart.add(item);
-        this.cartTotal += item.cost;
+    public int getUserID() {
+        return userID;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setAccountBalance(double balance) {
+        this.accountBalance = balance;
+    }
+
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public HashMap<Item, LocalDate> getRentLog() {
+        return rentLog;
+    }
+
+    public ArrayList<Item> getRentedItems() {
+        return rentedItems;
+    }
+
+    public void deductFromBalance(double amount) {
+        this.accountBalance -= amount;
+    }
+
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
+
+    
 
 }

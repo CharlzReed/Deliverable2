@@ -26,7 +26,7 @@ public class DataManager {
 
     public List<User> getUsers() {
         loadData();
-        return Library.users;
+        return Library.getInstance().getUsers();
     }
 
     public void saveData() {
@@ -34,8 +34,8 @@ public class DataManager {
     }
 
     public void registerNewUser(User newUser) throws IOException {
-        Library.addUser(newUser);
+        Library.getInstance().addUserSafely(newUser);
         saveData();
     }
-    
+
 }

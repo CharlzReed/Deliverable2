@@ -32,7 +32,7 @@ public class CheckoutItems {
 	}
 	
 	public JPanel show(JPanel j) {
-		System.out.println("is cart empty?: " + cartList.isEmpty() + " account Balance?: " + this.currentUser.accountBalance);
+		System.out.println("is cart empty?: " + cartList.isEmpty() + " account Balance?: " + this.currentUser.getAccountBalance());
 		System.out.println(this.currentUser.userCart + " " + "HI");
 		// String[] a = { "a", "b", "c", "c", "c", "c", "c", "c", "c", "c" };
 		loadCart(this.cartList, grabList);
@@ -88,7 +88,8 @@ public class CheckoutItems {
 	}
 
 	protected void newBalance(double balance) {
-		this.currentUser.accountBalance = balance;
+		this.currentUser.setAccountBalance(balance);
+		refresh();
 	}
 
 	private void loadCart(DefaultListModel<String> cartList, HashMap<String, Item> grabList) {
@@ -105,7 +106,7 @@ public class CheckoutItems {
 		grabList.clear();
 		this.currentUser.cartTotal = 0.00;
 		this.currentUser.userCart.clear();
-		System.out.println(currentUser.accountBalance);
+		System.out.println(this.currentUser.getAccountBalance());
 		refresh();
 	}
 	
@@ -129,7 +130,7 @@ public class CheckoutItems {
 		double taxes = sub * 0.13;
 		double total = sub + taxes;
 		
-		this.balanceLabel = createLabel("Account Balance: " + String.format("%.2f", this.currentUser.accountBalance) + " ");
+		this.balanceLabel = createLabel("Account Balance: " + String.format("%.2f", this.currentUser.getAccountBalance()) + " ");
 		JLabel subtotal = createLabel("Subtotal: " + String.format("%.2f", subtotalAmount) + " |");
 		JLabel taxTotal = createLabel("Taxes: " + String.format("%.2f", taxes) + " |");
 		JLabel finalTotal = createLabel("Total: " + String.format("%.2f", total));
@@ -156,7 +157,7 @@ public class CheckoutItems {
 	//cart gets refreshed when this is called
 	public void refresh() {
 		cartList.clear();
-		this.balanceLabel.setText("Account Balance: " + String.format("%.2f", this.currentUser.accountBalance) + " |");
+		this.balanceLabel.setText("Account Balance: " + String.format("%.2f", this.currentUser.getAccountBalance()) + " |");
 		loadCart(cartList, grabList);
 		j.remove(checkoutInfo);
 		this.checkoutInfo = createCheckoutInfo(this.currentUser.cartTotal);

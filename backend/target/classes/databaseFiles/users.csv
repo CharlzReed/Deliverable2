@@ -1,6 +1,6 @@
 userID,name,email,password,userType,accountBalance
-2000,John,J.Smith@gmail.com,asdf1,VISITOR,0.850000
-2001,Tim,Timmy1@gmail.com,asdf2,VISITOR,35.640000
+2000,John,J.Smith@gmail.com,asdf1,VISITOR,6.370000
+2001,Tim,Timmy1@gmail.com,asdf2,VISITOR,37.620000
 2002,Jenny,Jenny1999@gmail.com,asdf3,STUDENT,23.010000
 2003,Creed,C.Bratton@gmail.com,asdf4,STUDENT,1817.550000
 2004,Stanly,StoicStan@gmail.com,asdf5,FACULTY,2.320000
@@ -9,3 +9,11 @@ userID,name,email,password,userType,accountBalance
 2007,Toby,toby100@gmail.com,asdf8,NON_FACULTY,87.050000
 2008,Jeff,MyNameIsJeff@gmail.com,asdf9,ADMIN,0.170000
 2593,Arav Rabanni,aravfish04@gmail.com,MomDad04#,VISITOR,20.000000
+9978,John Doe,john.doe@example.com,securePassword123,STUDENT,12.080000
+7699,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+6116,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+3022,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+9039,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+4334,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+9048,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000
+5299,John Doe,john.doe@example.com,securePassword123,STUDENT,100.000000

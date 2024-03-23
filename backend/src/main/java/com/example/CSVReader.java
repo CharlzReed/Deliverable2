@@ -30,18 +30,18 @@ public class CSVReader {
 
     public static void writeALL() {
         try {
-            String header = "itemID,name,itemType,locationInLibrary,cost,statusType";
-            writeObjectArrayToFile("items.csv", header, Library.items);
+            String header = "itemID,name,itemType,locationInLibrary,cost,statusType,unique1,unique2";
+            writeObjectArrayToFile("items.csv", header, Library.getInstance().getItems());
 
             header = "userID,name,email,password,userType,accountBalance";
-            writeObjectArrayToFile("users.csv", header, Library.users);
+            writeObjectArrayToFile("users.csv", header, Library.getInstance().getUsers());
 
             header = "courseID,courseName,courseCode,startDate,endDate";
-            writeObjectArrayToFile("courses.csv", header, Library.courses);
+            writeObjectArrayToFile("courses.csv", header, Library.getInstance().getCourses());
 
             String header1 = "userID,itemID";
             String header2 = "userID,courseID";
-            writeAssociations(header1, header2, Library.users);
+            writeAssociations(header1, header2, Library.getInstance().getUsers());
 
             writeU2I2D();
 
@@ -52,7 +52,7 @@ public class CSVReader {
     }
 
     private static void readItems() throws IOException {
-        String headers = "itemID,name,itemType,locationInLibrary,cost,statusType";
+        String headers = "itemID,name,itemType,locationInLibrary,cost,statusType,unique1,unique2";
         try (BufferedReader br = new BufferedReader(new FileReader(fileLocation + "items.csv"))) {
             String line;
             String[] headerArray = headers.split(",");
@@ -74,8 +74,50 @@ public class CSVReader {
                 LocationType location = LocationType.valueOf(values[3]);
                 double cost = Double.parseDouble(values[4]);
                 StatusType statusType = StatusType.valueOf(values[5]);
+                String unique1 = values[6];
+                String unique2 = values[7];
 
-                Library.addItem(new Item(id, name, itemType, location, cost, statusType));
+                Item item = null;
+
+                switch (itemType) {
+                    case BOOK:
+                        String author = unique1;
+                        int year = Integer.parseInt(unique2);
+                        item = ItemFactory.createBook(id, name, location, cost, statusType, author, year);
+                        Library.getInstance().addItem(item);
+                        break;
+                    case MAGAZINE:
+                        String issueNumber = unique1;
+                        String genre = unique2;
+                        item = ItemFactory.createMagazine(id, name, location, cost, statusType, issueNumber, genre);
+                        Library.getInstance().addItem(item);
+                        break;
+                    case CD:
+                        String artist = unique1;
+                        int releaseYear = Integer.parseInt(unique2);
+                        item = ItemFactory.createCD(id, name, location, cost, statusType, artist, releaseYear);
+                        Library.getInstance().addItem(item);
+                        break;
+                    case SUBSCRIPTION:
+                        String provider = unique1;
+                        String subscriptionType = unique2;
+                        item = ItemFactory.createSubscription(id, name, location, cost, statusType, provider,
+                                subscriptionType);
+                        Library.getInstance().addItem(item);
+                        break;
+
+                    case TEXTBOOK:
+                        String subject = unique1;
+                        String isbn = unique2;
+                        item = ItemFactory.createTextbook(id, name, location, cost, statusType, subject, isbn);
+                        Library.getInstance().addItem(item);
+                        break;
+
+                    default:
+                        System.out.println("Unsupported item type: " + itemType);
+                        break;
+                }
+
             }
         }
     }
@@ -86,6 +128,7 @@ public class CSVReader {
             String line;
             String[] headerArray = headers.split(",");
             boolean isHeader = true;
+            Library library = Library.getInstance();
             while ((line = br.readLine()) != null) {
                 if (isHeader) {
                     isHeader = false;
@@ -104,7 +147,14 @@ public class CSVReader {
                 UserType userType = UserType.valueOf(values[4]);
                 double accountBalance = Double.parseDouble(values[5]);
 
-                Library.addUser(new User(userID, name, email, password, userType, accountBalance));
+                User user = new User.UserBuilder(userID, name)
+                        .email(email)
+                        .password(password)
+                        .userType(userType)
+                        .accountBalance(accountBalance)
+                        .build();
+
+                library.addUserSafely(user);
             }
         }
     }
@@ -132,7 +182,7 @@ public class CSVReader {
                 LocalDate startDate = LocalDate.parse(values[3]);
                 LocalDate endDate = LocalDate.parse(values[4]);
 
-                Library.addCourse(new Course(courseID, courseName, courseCode, startDate, endDate));
+                Library.getInstance().addCourse(new Course(courseID, courseName, courseCode, startDate, endDate));
             }
         }
     }
@@ -160,20 +210,20 @@ public class CSVReader {
                 Course tempCourse = null;
                 Item tempItem = null;
 
-                for (int i = 0; i < Library.courses.size(); i++) {
-                    tempCourse = Library.courses.get(i);
+                for (int i = 0; i < Library.getInstance().getCourses().size(); i++) {
+                    tempCourse = Library.getInstance().getCourses().get(i);
                     if (tempCourse.courseID == courseID) {
                         break;
                     }
                 }
-                for (int i = 0; i < Library.items.size(); i++) {
-                    tempItem = Library.items.get(i);
+                for (int i = 0; i < Library.getInstance().getItems().size(); i++) {
+                    tempItem = Library.getInstance().getItems().get(i);
                     if (tempItem.itemID == textbookID) {
                         break;
                     }
                 }
 
-                Library.assign_course_textbook(tempCourse, tempItem);
+                Library.getInstance().assign_course_textbook(tempCourse, tempItem);
             }
         }
     }
@@ -201,14 +251,14 @@ public class CSVReader {
                 User tempUser = null;
                 Item tempItem = null;
 
-                for (int i = 0; i < Library.users.size(); i++) {
-                    tempUser = Library.users.get(i);
-                    if (tempUser.userID == userID) {
+                for (int i = 0; i < Library.getInstance().getUsers().size(); i++) {
+                    tempUser = Library.getInstance().getUsers().get(i);
+                    if (tempUser.getUserID() == userID) {
                         break;
                     }
                 }
-                for (int i = 0; i < Library.items.size(); i++) {
-                    tempItem = Library.items.get(i);
+                for (int i = 0; i < Library.getInstance().getItems().size(); i++) {
+                    tempItem = Library.getInstance().getItems().get(i);
                     if (tempItem.itemID == itemID) {
                         break;
                     }
@@ -243,14 +293,14 @@ public class CSVReader {
                 User tempUser = null;
                 Course tempCourse = null;
 
-                for (int i = 0; i < Library.users.size(); i++) {
-                    tempUser = Library.users.get(i);
-                    if (tempUser.userID == userID) {
+                for (int i = 0; i < Library.getInstance().getUsers().size(); i++) {
+                    tempUser = Library.getInstance().getUsers().get(i);
+                    if (tempUser.getUserID() == userID) {
                         break;
                     }
                 }
-                for (int i = 0; i < Library.courses.size(); i++) {
-                    tempCourse = Library.courses.get(i);
+                for (int i = 0; i < Library.getInstance().getCourses().size(); i++) {
+                    tempCourse = Library.getInstance().getCourses().get(i);
                     if (tempCourse.courseID == courseID) {
                         break;
                     }
@@ -285,20 +335,20 @@ public class CSVReader {
                 User tempUser = null;
                 Item tempItem = null;
 
-                for (int i = 0; i < Library.users.size(); i++) {
-                    tempUser = Library.users.get(i);
-                    if (tempUser.userID == userID) {
+                for (int i = 0; i < Library.getInstance().getUsers().size(); i++) {
+                    tempUser = Library.getInstance().getUsers().get(i);
+                    if (tempUser.getUserID() == userID) {
                         break;
                     }
                 }
-                for (int i = 0; i < Library.items.size(); i++) {
-                    tempItem = Library.items.get(i);
+                for (int i = 0; i < Library.getInstance().getItems().size(); i++) {
+                    tempItem = Library.getInstance().getItems().get(i);
                     if (tempItem.itemID == itemID) {
                         break;
                     }
                 }
 
-                tempUser.rentLog.put(tempItem, date);
+                tempUser.getRentLog().put(tempItem, date);
             }
         }
     }
@@ -335,15 +385,15 @@ public class CSVReader {
             throws IOException {
         ArrayList<String> user2itemArrayList = new ArrayList<>();
         ArrayList<String> user2CourseArrayList = new ArrayList<>();
-        for (int i = 0; i < Library.users.size(); i++) {
-            for (int j = 0; j < Library.users.get(i).rentedItems.size(); j++) {
-                String t = String.format("%s,%s", Library.users.get(i).userID,
-                        Library.users.get(i).rentedItems.get(j).itemID);
+        for (int i = 0; i < Library.getInstance().getUsers().size(); i++) {
+            for (int j = 0; j < Library.getInstance().getUsers().get(i).getRentedItems().size(); j++) {
+                String t = String.format("%s,%s", Library.getInstance().getUsers().get(i).getUserID(),
+                        Library.getInstance().getUsers().get(i).getRentedItems().get(j).itemID);
                 user2itemArrayList.add(t);
             }
-            for (int j = 0; j < Library.users.get(i).courses.size(); j++) {
-                String t = String.format("%s,%s", Library.users.get(i).userID,
-                        Library.users.get(i).courses.get(j).courseID);
+            for (int j = 0; j < Library.getInstance().getUsers().get(i).getCourses().size(); j++) {
+                String t = String.format("%s,%s", Library.getInstance().getUsers().get(i).getUserID(),
+                        Library.getInstance().getUsers().get(i).getCourses().get(j).courseID);
                 user2CourseArrayList.add(t);
             }
         }
@@ -374,11 +424,12 @@ public class CSVReader {
     private static void writeU2I2D() throws IOException {
         String header = "userID,itemID,dateAdded";
         ArrayList<String> user2item2dateArrayList = new ArrayList<>();
-        for (int i = 0; i < Library.users.size(); i++) {
-            for (int j = 0; j < Library.users.get(i).rentedItems.size(); j++) {
-                int uid = Library.users.get(i).userID;
-                int iid = Library.users.get(i).rentedItems.get(j).itemID;
-                LocalDate d = Library.users.get(i).rentLog.get(Library.users.get(i).rentedItems.get(j));
+        for (int i = 0; i < Library.getInstance().getUsers().size(); i++) {
+            for (int j = 0; j < Library.getInstance().getUsers().get(i).getRentedItems().size(); j++) {
+                int uid = Library.getInstance().getUsers().get(i).getUserID();
+                int iid = Library.getInstance().getUsers().get(i).getRentedItems().get(j).itemID;
+                LocalDate d = Library.getInstance().getUsers().get(i).getRentLog()
+                        .get(Library.getInstance().getUsers().get(i).getRentedItems().get(j));
                 String t = String.format("%s,%s,%s", uid, iid, d);
                 user2item2dateArrayList.add(t);
             }
