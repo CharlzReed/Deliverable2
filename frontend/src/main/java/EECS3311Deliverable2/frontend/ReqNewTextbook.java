@@ -120,7 +120,7 @@ public class ReqNewTextbook {
 
     private void loadData(DefaultListModel<String> items123, HashMap<String, Item> list) {
         for (Item item : Library.getInstance().getItems()) {
-            if ((item.getItemType() == ItemType.TEXTBOOK)) {
+            if (!currentUser.getRentedItems().contains(item) && (item.getItemType() == ItemType.TEXTBOOK)) {
                 String formatted = item.name + " " + "(" + item.itemType + ") " + "(" + String.format("%.2f", item.cost)
                         + ")";
                 items123.addElement(formatted);

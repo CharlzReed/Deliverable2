@@ -156,7 +156,6 @@ public class SubToNews {
         if (canrent == true) {
             this.user.addToCart(item.get(key));
             JOptionPane.showMessageDialog(j, "Item added to cart.", "Item Added", JOptionPane.INFORMATION_MESSAGE);
-                    
         } else {
             JOptionPane.showMessageDialog(j, "Reason: " + grabDenyReason(this.user.rentalDenied),
                     "Item Cannot Be Added", JOptionPane.OK_OPTION);
@@ -182,7 +181,4 @@ public class SubToNews {
         }
         return "Error";
     }
-    
-
-    
 }
