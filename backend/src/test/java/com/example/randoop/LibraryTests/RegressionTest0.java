@@ -20,24 +20,13 @@ public class RegressionTest0 {
     @Test
     public void test2() throws Throwable {
         if (debug)
-            System.out.format("%n%s%n", "RegressionTest0.test2");
-        com.example.Course course0 = null;
-        java.util.List<com.example.Item> itemList1 = com.example.Library.checkForNewEditions(course0);
-        java.lang.Class<?> wildcardClass2 = itemList1.getClass();
-        org.junit.Assert.assertNotNull(itemList1);
-        org.junit.Assert.assertNotNull(wildcardClass2);
-    }
-
-    @Test
-    public void test3() throws Throwable {
-        if (debug)
             System.out.format("%n%s%n", "RegressionTest0.test3");
         java.util.List<java.lang.String> strList1 = com.example.Library.getUserRentedItemsWithDueDates((int) (byte) 10);
         org.junit.Assert.assertNotNull(strList1);
     }
 
     @Test
-    public void test4() throws Throwable {
+    public void test3() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "RegressionTest0.test4");
         com.example.Library library0 = com.example.Library.getInstance();
@@ -49,7 +38,7 @@ public class RegressionTest0 {
     }
 
     @Test
-    public void test5() throws Throwable {
+    public void test4() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "RegressionTest0.test5");
         com.example.Library library0 = com.example.Library.getInstance();
@@ -62,7 +51,7 @@ public class RegressionTest0 {
     }
 
     @Test
-    public void test6() throws Throwable {
+    public void test5() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "RegressionTest0.test6");
         com.example.Library library0 = com.example.Library.getInstance();
