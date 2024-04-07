@@ -1,14 +1,10 @@
-package com.example.ManualTests;
+package com.example.manualTests;
 
 import com.example.*;
 import java.time.LocalDate;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.example.Library;
-import com.example.User;
-import com.example.UserType;
 
 public class CourseTest {
 	@Test
