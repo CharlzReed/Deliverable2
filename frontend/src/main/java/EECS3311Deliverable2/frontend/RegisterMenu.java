@@ -126,7 +126,7 @@ public class RegisterMenu {
 					return;
 				}
 
-				// uused to validate password
+				// used to validate password
 				if (!isPasswordValid(password)) {
 					JOptionPane.showMessageDialog(window,
 							"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long.",

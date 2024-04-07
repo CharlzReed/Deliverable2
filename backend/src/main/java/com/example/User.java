@@ -81,6 +81,10 @@ public class User {
     // for adding items WITHOUT logging date. Used only when reconstructing the
     // objects.
     public boolean addItem(Item item) {
+        if (item == null) {
+            System.out.println("Attempted to add a null item.");
+            return false;
+        }
 
         if (threeOverDue())
             return false;
@@ -159,14 +163,15 @@ public class User {
             courses.add(course);
             // System.out.println("Course added successfully.");
         } else {
+            Item textbook = Library.getInstance().getCourse2textbook().get(course);
             System.out.println("Cannot add course. Current date is not between the start and end dates of the course.");
-            returnItem(Library.getInstance().getCourse2textbook().get(course)); // Remove the textbook from the rented
-                                                                                // items since the
-            // course is over
+            if (textbook != null && rentedItems.contains(textbook)) {
+                returnItem(textbook);
+            }
         }
     }
 
-    public void add2Balance(int amount) {
+    public void add2Balance(double amount) {
         accountBalance += amount;
     }
 
