@@ -166,7 +166,7 @@ public class User {
         }
     }
 
-    public void add2Balance(int amount) {
+    public void add2Balance(double amount) {
         accountBalance += amount;
     }
 

@@ -33,6 +33,12 @@ public class Library implements Subject {
         return instance;
     }
 
+    //Added for testing purposes -Moses
+    public static Library newInstance() {
+        instance = new Library();
+        return instance;
+    }
+
     public static int generateRandomNumber() {
         Random rand = new Random();
         return rand.nextInt(9000) + 1000;
