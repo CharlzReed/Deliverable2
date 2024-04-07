@@ -18,3 +18,4 @@ itemID,name,itemType,locationInLibrary,cost,statusType,unique1,unique2
 1013,Human Anatomy 101,TEXTBOOK,WEST_SHELF,0.000000,ACTIVE,Elaine N. Marieb,2018
 1014,History of WWII,TEXTBOOK,EAST_SHELF,0.000000,ACTIVE,Winston Churchill,1948
 3148,The Alchemist,BOOK,NORTH_SHELF,15.990000,ACTIVE,David Doe,2006
+1,The Example Book,BOOK,NORTH_SHELF,10.990000,ACTIVE
