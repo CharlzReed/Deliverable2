@@ -6,7 +6,6 @@ import com.example.ItemFactory;
 import com.example.LocationType;
 import com.example.StatusType;
 import com.example.Subscription;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
