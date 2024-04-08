@@ -1,8 +1,19 @@
-package com.example;
+package com.example.manualTests;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import com.example.AvailableState;
+import com.example.Book;
+import com.example.CD;
+import com.example.CheckedOutState;
+import com.example.Item;
+import com.example.ItemContext;
+import com.example.LocationType;
+import com.example.Magazine;
+import com.example.StatusType;
+import com.example.Subscription;
 
 /**
  * Unit test for simple App.

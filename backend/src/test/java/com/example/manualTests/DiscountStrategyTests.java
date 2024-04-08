@@ -1,8 +1,13 @@
-package com.example;
+package com.example.manualTests;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.example.DiscountStrategy;
+import com.example.FreeDiscountStrategy;
+import com.example.NoDiscountStrategy;
+import com.example.PercentageDiscountStrategy;
 
 /**
  * Unit test for simple App.

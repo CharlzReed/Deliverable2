@@ -1,4 +1,4 @@
-package com.example;
+package com.example.manualTests;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
@@ -6,6 +6,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
+
+import com.example.Book;
+import com.example.ItemFactory;
+import com.example.LocationType;
+import com.example.StatusType;
 
 /**
  * Unit test for simple App.
@@ -15,7 +20,7 @@ public class BookTest {
      * Rigorous Test :-)
      */
     @Test
-    void testBookConstructorAndGetters() {
+    public void testBookConstructorAndGetters() {
         Book book = (Book) ItemFactory.createBook(1, "Effective Java", LocationType.NORTH_SHELF, 45.0,
                 StatusType.ACTIVE, "Joshua Bloch", 2008);
         assertNotNull("Book instance should be created", book);
@@ -33,7 +38,7 @@ public class BookTest {
     public void testBookCsvFormat() {
         Book book = (Book) ItemFactory.createBook(1, "Effective Java", LocationType.NORTH_SHELF, 45.0,
                 StatusType.ACTIVE, "Joshua Bloch", 2008);
-        String expectedCsv = "1,Effective Java,BOOK,NORTH_SHELF,45.0,ACTIVE,Joshua Bloch,2008";
+        String expectedCsv = "1,Effective Java,BOOK,NORTH_SHELF,45.000000,ACTIVE,Joshua Bloch,2008";
         assertEquals("CSV output should match expected format", expectedCsv, book.csvFormat());
     }
 
@@ -42,7 +47,8 @@ public class BookTest {
         Book book = (Book) ItemFactory.createBook(1, "Effective Java", LocationType.NORTH_SHELF, 45.0,
                 StatusType.ACTIVE, "Joshua Bloch", 2008);
         // Test behavior specific to the ACTIVE state
-        assertTrue("Book should be available for checkout in ACTIVE state", book.isAvailable());
+        assertTrue("Book should be available for checkout in ACTIVE state", book.isActive());
+        assertTrue("Book should be available for checkout when available", book.isAvailable());
     }
 
     @Test
@@ -50,7 +56,8 @@ public class BookTest {
         Book book = (Book) ItemFactory.createBook(1, "Effective Java", LocationType.NORTH_SHELF, 45.0,
                 StatusType.PENDING_APPROVAL, "Joshua Bloch", 2008);
         // Test behavior specific to the PENDING_APPROVAL state
-        assertFalse("Book should not be available for checkout in PENDING_APPROVAL state", book.isAvailable());
+        assertFalse("Book should not be available for checkout in PENDING_APPROVAL state", book.isActive());
+        assertFalse("Book should not be available for checkout when unavailable", book.isAvailable());
     }
 
     @Test
@@ -58,6 +65,8 @@ public class BookTest {
         Book book = (Book) ItemFactory.createBook(1, "Effective Java", LocationType.NORTH_SHELF, 45.0,
                 StatusType.INACTIVE, "Joshua Bloch", 2008);
         // Test behavior specific to the INACTIVE state
-        assertFalse("Book should not be available for checkout in INACTIVE state", book.isAvailable());
+        assertFalse("Book should not be available for checkout in INACTIVE state", book.isActive());
+        assertFalse("Book should not be available for checkout when unavailable", book.isAvailable());
+
     }
 }

@@ -1,6 +1,12 @@
-package com.example;
+package com.example.manualTests;
 
 import org.junit.Test;
+
+import com.example.ItemFactory;
+import com.example.LocationType;
+import com.example.Magazine;
+import com.example.StatusType;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -14,7 +20,7 @@ public class MagazineTest {
      * Rigorous Test :-)
      */
     @Test
-    void testMagazineConstructorAndGetters() {
+    public void testMagazineConstructorAndGetters() {
         Magazine magazine = (Magazine) ItemFactory.createMagazine(3, "National Geographic", LocationType.SOUTH_SHELF,
                 5.0, StatusType.ACTIVE, "May 2021", "Science");
         assertNotNull("Magazine instance should be created", magazine);
@@ -33,7 +39,7 @@ public class MagazineTest {
         Magazine magazine = (Magazine) ItemFactory.createMagazine(3, "National Geographic", LocationType.SOUTH_SHELF,
                 5.0,
                 StatusType.ACTIVE, "May 2021", "Science");
-        String expectedCsv = "3,National Geographic,MAGAZINE,SOUTH_SHELF,5.0,ACTIVE,May 2021,Science";
+        String expectedCsv = "3,National Geographic,MAGAZINE,SOUTH_SHELF,5.000000,ACTIVE,May 2021,Science";
         assertEquals("CSV output should match expected format", expectedCsv, magazine.csvFormat());
     }
 
@@ -42,7 +48,9 @@ public class MagazineTest {
         Magazine magazine = (Magazine) ItemFactory.createMagazine(3, "National Geographic", LocationType.SOUTH_SHELF,
                 5.0,
                 StatusType.ACTIVE, "May 2021", "Science");
-        assertTrue("Magazine should be available for checkout in ACTIVE state", magazine.isAvailable());
+        assertTrue("Magazine should be available for checkout when available", magazine.isAvailable());
+        assertTrue("Magazine should be available for checkout in ACTIVE state", magazine.isActive());
+
     }
 
     @Test
@@ -50,7 +58,8 @@ public class MagazineTest {
         Magazine magazine = (Magazine) ItemFactory.createMagazine(3, "National Geographic", LocationType.SOUTH_SHELF,
                 5.0,
                 StatusType.PENDING_APPROVAL, "May 2021", "Science");
-        assertFalse("Magazine should not be available for checkout in PENDING_APPROVAL state", magazine.isAvailable());
+        assertFalse("Magazine should not be available for checkout when unavailable", magazine.isAvailable());
+        assertFalse("Magazine should be unavailable for checkout in PENDING_APPROVAL state", magazine.isActive());
     }
 
     @Test
@@ -58,6 +67,8 @@ public class MagazineTest {
         Magazine magazine = (Magazine) ItemFactory.createMagazine(3, "National Geographic", LocationType.SOUTH_SHELF,
                 5.0,
                 StatusType.INACTIVE, "May 2021", "Science");
-        assertFalse("Magazine should not be available for checkout in INACTIVE state", magazine.isAvailable());
+        assertFalse("Magazine should not be available for checkout when unavailable", magazine.isAvailable());
+        assertFalse("Magazine should be unavailable for checkout in INACTIVE state", magazine.isActive());
+
     }
 }
