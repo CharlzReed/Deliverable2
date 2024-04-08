@@ -244,20 +244,10 @@ public class CSVReaderTest {
     }
 
 
-    // private static String getFileContent(String path) throws IOException {
-    //     List<String> lines = Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8);
-    //     StringBuilder contentBuilder = new StringBuilder();
 
-    //     for (String line : lines) {
-    //         contentBuilder.append(line).append("\n");
-    //     }
-
-    //     return contentBuilder.toString();
-    // }
-
-    private static String getFileContent(String path) throws IOException {
+    private static String getFileContent(String fileName) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(fileLocation + path))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileLocation + fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
                 contentBuilder.append(line).append("\n");
@@ -270,13 +260,13 @@ public class CSVReaderTest {
 
     @Test
     public void testwriteObjectArrayToFile_items() throws IOException {
-        String path = fileLocation + "items.csv";
+        String fileName = "items.csv";
         Library lib = Library.newInstance(); // FRESH LIBRARY
         CSVReader.readALL();
 
-        String fileContentBeforeWriting = getFileContent(path);
+        String fileContentBeforeWriting = getFileContent(fileName);
         CSVReader.writeALL();
-        String fileContentAfterWriting = getFileContent(path);
+        String fileContentAfterWriting = getFileContent(fileName);
 
         boolean works = true;
         if (!(fileContentBeforeWriting.equals(fileContentAfterWriting))) {
@@ -289,13 +279,13 @@ public class CSVReaderTest {
 
     @Test
     public void testwriteObjectArrayToFile_users() throws IOException {
-        String path = fileLocation + "users.csv";
+        String fileName = "users.csv";
         Library lib = Library.newInstance(); // FRESH LIBRARY
         CSVReader.readALL();
 
-        String fileContentBeforeWriting = getFileContent(path);
+        String fileContentBeforeWriting = getFileContent(fileName);
         CSVReader.writeALL();
-        String fileContentAfterWriting = getFileContent(path);
+        String fileContentAfterWriting = getFileContent(fileName);
 
         boolean works = true;
         if (!(fileContentBeforeWriting.equals(fileContentAfterWriting))) {
@@ -308,13 +298,13 @@ public class CSVReaderTest {
 
     @Test
     public void testwriteObjectArrayToFile_courses() throws IOException {
-        String path = fileLocation + "courses.csv";
+        String fileName = "courses.csv";
         Library lib = Library.newInstance(); // FRESH LIBRARY
         CSVReader.readALL();
 
-        String fileContentBeforeWriting = getFileContent(path);
+        String fileContentBeforeWriting = getFileContent(fileName);
         CSVReader.writeALL();
-        String fileContentAfterWriting = getFileContent(path);
+        String fileContentAfterWriting = getFileContent(fileName);
 
         boolean works = true;
         if (!(fileContentBeforeWriting.equals(fileContentAfterWriting))) {
@@ -326,16 +316,16 @@ public class CSVReaderTest {
 
     @Test
     public void testwriteAssociations() throws IOException {
-        String path1 = fileLocation + "user2item.csv";
-        String path2 = fileLocation + "user2course.csv";
+        String fileName1 = "user2item.csv";
+        String fileName2 = "user2course.csv";
         Library lib = Library.newInstance(); // FRESH LIBRARY
         CSVReader.readALL();
 
-        String fileContentBeforeWriting1 = getFileContent(path1);
-        String fileContentBeforeWriting2 = getFileContent(path2);
+        String fileContentBeforeWriting1 = getFileContent(fileName1);
+        String fileContentBeforeWriting2 = getFileContent(fileName2);
         CSVReader.writeALL();
-        String fileContentAfterWriting1 = getFileContent(path1);
-        String fileContentAfterWriting2 = getFileContent(path2);
+        String fileContentAfterWriting1 = getFileContent(fileName1);
+        String fileContentAfterWriting2 = getFileContent(fileName2);
 
         boolean works = false;
 
@@ -353,13 +343,13 @@ public class CSVReaderTest {
 
     @Test
     public void testwriteU2I2D() throws IOException {
-        String path = fileLocation + "user2item2date.csv";
+        String fileName = "user2item2date.csv";
         Library lib = Library.newInstance(); // FRESH LIBRARY
         CSVReader.readALL();
 
-        String fileContentBeforeWriting = getFileContent(path);
+        String fileContentBeforeWriting = getFileContent(fileName);
         CSVReader.writeALL();
-        String fileContentAfterWriting = getFileContent(path);
+        String fileContentAfterWriting = getFileContent(fileName);
 
         boolean works = false; // Should end up being true
 
