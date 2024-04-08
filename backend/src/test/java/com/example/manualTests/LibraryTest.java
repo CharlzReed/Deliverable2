@@ -1,4 +1,4 @@
-package com.example.ADDISONTEST;
+package com.example.manualTests;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
