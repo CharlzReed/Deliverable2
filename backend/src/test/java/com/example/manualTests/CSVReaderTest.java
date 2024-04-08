@@ -28,12 +28,16 @@ import com.example.*;
 
 public class CSVReaderTest {
 
-        public static String fileLocation = "backend" + File.separator + "src" + File.separator + "main" + File.separator
+        // public static String fileLocation = "backend" + File.separator + "src" + File.separator + "main" + File.separator
+        //     + "resources" + File.separator + "databaseFiles" + File.separator;
+
+        // Path that is one level deeper
+        public static String fileLocation = "Deliverable2-main" + File.separator + "backend" + File.separator + "src" + File.separator + "main" + File.separator
             + "resources" + File.separator + "databaseFiles" + File.separator;
 
     
     @Test
-    public void testReadItems() {
+    public void testreadItems() {
 
         Library lib = Library.newInstance(); // FRESH LIBRARY
 
