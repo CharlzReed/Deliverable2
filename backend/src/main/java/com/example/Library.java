@@ -25,6 +25,20 @@ public class Library implements Subject {
     private Library() {
         observers.add(new NewItemAlert());
     }
+    //MADE BY ADDISON FOR TESTS
+    public static Library createlibrary(){
+        instance=new Library();
+        return instance;
+
+    }
+    //MADE BY ADDISON FOR TEST
+    public List<Observer> getObservers(){
+        return observers;
+    }
+    //MADE BY ADDISON FOR TEST
+    public List<OverdueListener> getOverduelistener(){
+        return overdueListeners;
+    }
 
     public static Library getInstance() {
         if (instance == null) {
