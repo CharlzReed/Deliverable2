@@ -2,11 +2,10 @@ package com.example.manualTests;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,16 +27,12 @@ import com.example.*;
 
 public class CSVReaderTest {
 
-        // public static String fileLocation = "backend" + File.separator + "src" + File.separator + "main" + File.separator
-        //     + "resources" + File.separator + "databaseFiles" + File.separator;
-
-        // Path that is one level deeper
-        public static String fileLocation = "Deliverable2-main" + File.separator + "backend" + File.separator + "src" + File.separator + "main" + File.separator
+    public static String fileLocation = "backend" + File.separator + "src" + File.separator + "main" + File.separator
             + "resources" + File.separator + "databaseFiles" + File.separator;
 
     
     @Test
-    public void testreadItems() {
+    public void testReadItems() {
 
         Library lib = Library.newInstance(); // FRESH LIBRARY
 
@@ -49,8 +44,6 @@ public class CSVReaderTest {
 
         ArrayList<Item> fromLib = lib.getItems(); // SHOULD NOT BE EMPTY
 
-        Item item1 = fromLib.get(0); // Shouldnt cause an 'index out of bounds' error unless the array is empty (which it shouldnt be)
-
         // Compare expected with actual results and return if they are the same
         boolean works = true;
         for (int i = 0; i < fromLib.size(); i++) {
@@ -59,7 +52,7 @@ public class CSVReaderTest {
             }
         }
         
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -81,7 +74,7 @@ public class CSVReaderTest {
             }
         }
 
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -103,7 +96,7 @@ public class CSVReaderTest {
             }
         }
 
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -128,7 +121,7 @@ public class CSVReaderTest {
             }
         }
 
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -174,7 +167,7 @@ public class CSVReaderTest {
                 }
             }
         }
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -206,7 +199,7 @@ public class CSVReaderTest {
                 }
             }
         }
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -247,19 +240,30 @@ public class CSVReaderTest {
                 }
             }
         }
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
+    // private static String getFileContent(String path) throws IOException {
+    //     List<String> lines = Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8);
+    //     StringBuilder contentBuilder = new StringBuilder();
+
+    //     for (String line : lines) {
+    //         contentBuilder.append(line).append("\n");
+    //     }
+
+    //     return contentBuilder.toString();
+    // }
+
     private static String getFileContent(String path) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8);
         StringBuilder contentBuilder = new StringBuilder();
-
-        for (String line : lines) {
-            contentBuilder.append(line).append("\n");
+        try (BufferedReader br = new BufferedReader(new FileReader(fileLocation + path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                contentBuilder.append(line).append("\n");
+            }
+            return contentBuilder.toString();
         }
-
-        return contentBuilder.toString();
     }
 
 
@@ -278,7 +282,7 @@ public class CSVReaderTest {
         if (!(fileContentBeforeWriting.equals(fileContentAfterWriting))) {
             works = false;
         }
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -297,7 +301,7 @@ public class CSVReaderTest {
         if (!(fileContentBeforeWriting.equals(fileContentAfterWriting))) {
             works = false;
         }
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -316,7 +320,7 @@ public class CSVReaderTest {
         if (!(fileContentBeforeWriting.equals(fileContentAfterWriting))) {
             works = false;
         }
-        assertTrue(works);  
+        assertTrue(works);
     }
 
 
@@ -367,8 +371,4 @@ public class CSVReaderTest {
 
         assertTrue(works);
     }
-
-
-
-
 }
