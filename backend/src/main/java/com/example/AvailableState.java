@@ -3,8 +3,15 @@ package com.example;
 public class AvailableState implements ItemState {
     @Override
     public void checkout(ItemContext context) {
-        // Item is already checked out, cannot checkout again.
-        System.out.println("Item is already checked out.");
+        Library library = Library.getInstance(); // Access the singleton Library instance
+        Item item = context.getItem();
+        Integer availableCopies = library.getCopiesAvailable().getOrDefault(item, 0);
+
+        // Decrease the number of available copies by one
+        library.getCopiesAvailable().put(item, availableCopies - 1);
+
+        context.setState(new CheckedOutState());
+        System.out.println("Item has been checked out.");
     }
 
     @Override

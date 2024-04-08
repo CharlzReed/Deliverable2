@@ -1,5 +1,7 @@
 package com.example;
 
+import java.io.ObjectInputFilter.Status;
+
 public class Item {
 
     public int itemID;
@@ -21,8 +23,14 @@ public class Item {
         this.cost = cost;
         this.statusType = statusType;
         this.edition = "";
-        this.isAvailable = true;
         this.context = new ItemContext(this);
+        if(statusType.equals(StatusType.ACTIVE)){
+            isAvailable = true;
+        }
+        else {
+            isAvailable = false;
+        }
+
     }
 
     public String getEdition() {
@@ -74,6 +82,14 @@ public class Item {
     // addison
     public StatusType getstatustype() {
         return this.statusType;
+    }
+
+    public boolean isActive() {
+        if (statusType.equals(StatusType.ACTIVE)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // addison
