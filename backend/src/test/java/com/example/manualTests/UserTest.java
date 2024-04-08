@@ -1,4 +1,4 @@
-package com.example.manualTests;
+package com.example.ManualTests;
 
 import static org.junit.Assert.*;
 
@@ -22,31 +22,7 @@ public class UserTest {
 
     /* Tests for User Builder Class */
     @Test
-    public void userBuilder_Test1() {
-        String name = "David Green";
-        String email = "d.green@gmail.com";
-        String password = "hello123";
-        UserType userType = UserType.STUDENT;
-        double accountBalance = 0.00;
-        int userID = Library.generateNextUserId();
-
-        User testUser = new User.UserBuilder(userID, name)
-                .email(email)
-                .password(password)
-                .userType(userType)
-                .accountBalance(accountBalance)
-                .build();
-
-        Assert.assertEquals(name, testUser.getName());
-        Assert.assertEquals(email, testUser.getEmail());
-        Assert.assertEquals(password, testUser.getPassword());
-        Assert.assertEquals(userType, testUser.getUserType());
-        Assert.assertTrue(accountBalance == testUser.getAccountBalance());
-        Assert.assertTrue(userID == testUser.getUserID());
-    }
-
-    @Test
-    public void userBuilder_Test2() {
+    public void testUserBuilderInitializeUser() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -66,7 +42,13 @@ public class UserTest {
         ArrayList<Course> expectedCourses = new ArrayList<Course>();
         ArrayList<Item> expectedRentedItems = new ArrayList<Item>();
         HashMap<Item, LocalDate> expectedRentLog = new HashMap<Item, LocalDate>();
-
+        
+        Assert.assertEquals(name, testUser.getName());
+        Assert.assertEquals(email, testUser.getEmail());
+        Assert.assertEquals(password, testUser.getPassword());
+        Assert.assertEquals(userType, testUser.getUserType());
+        Assert.assertTrue(accountBalance == testUser.getAccountBalance());
+        Assert.assertTrue(userID == testUser.getUserID());
         Assert.assertTrue(expectedCartTotal == testUser.cartTotal);
         Assert.assertTrue(expectedRentalDenied == testUser.rentalDenied);
         Assert.assertEquals(expectedCourses, testUser.getCourses());
@@ -75,7 +57,7 @@ public class UserTest {
     }
 
     @Test
-    public void userBuilder_Test3() {
+    public void testUserBuilderInitializeNullUser() {
         String name = null;
         String email = null;
         String password = null;
@@ -96,13 +78,25 @@ public class UserTest {
         Assert.assertEquals(userType, testUser.getUserType());
         Assert.assertTrue(accountBalance == testUser.getAccountBalance());
         Assert.assertTrue(userID == testUser.getUserID());
+
+        double expectedCartTotal = 0.00;
+        int expectedRentalDenied = 0;
+        ArrayList<Course> expectedCourses = new ArrayList<Course>();
+        ArrayList<Item> expectedRentedItems = new ArrayList<Item>();
+        HashMap<Item, LocalDate> expectedRentLog = new HashMap<Item, LocalDate>();
+
+        Assert.assertTrue(expectedCartTotal == testUser.cartTotal);
+        Assert.assertTrue(expectedRentalDenied == testUser.rentalDenied);
+        Assert.assertEquals(expectedCourses, testUser.getCourses());
+        Assert.assertEquals(expectedRentedItems, testUser.getRentedItems());
+        Assert.assertEquals(expectedRentLog, testUser.getRentLog());
     }
 
     /* Tests for addItem and rentItem methods */
 
     // Testing addItem method in user, and testing if the proper item gets rented
     @Test
-    public void userAddItem_Test1() {
+    public void testUserAddItem() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -137,7 +131,7 @@ public class UserTest {
     // Testing addItem method in user, testing when user does not have enough
     // balance to rent the item
     @Test
-    public void userAddItem_Test2() {
+    public void testUserAddItemNoBalance() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -170,7 +164,7 @@ public class UserTest {
 
     // Testing addItem method in user, testing when user rents more than 10 items
     @Test
-    public void userAddItem_Test3() {
+    public void testUserAddItemMoreThanTen() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -206,7 +200,7 @@ public class UserTest {
     // Testing addItem method in user, testing when user rents an item with no
     // copies left
     @Test
-    public void userAddItem_Test4() {
+    public void testUserAddItemNull() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -227,9 +221,9 @@ public class UserTest {
         Assert.assertTrue(false == testUser.addItem(null));
     }
 
-    // Testing addItem method for amount of copies of an Item (not working rn)
+    // Testing addItem method for amount of copies of an Item 
     @Test
-    public void userAddItem_Test5() {
+    public void testUserAddItemAmount() {
         Library testLibrary = Library.newInstance();
         Item testItem1 = new Item(0, "Example Book", ItemType.BOOK, LocationType.NORTH_SHELF, 1.00, StatusType.ACTIVE);
 
@@ -263,7 +257,7 @@ public class UserTest {
 
     // Testing rentItem method in user, and testing if the proper item gets rented
     @Test
-    public void userRentItem_Test1() {
+    public void testUserRentItem() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -298,7 +292,7 @@ public class UserTest {
     // Testing rentItem method in user, testing when user does not have enough
     // balance to rent the item
     @Test
-    public void userRentItem_Test2() {
+    public void testUserRentItemNoBalance() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -331,7 +325,7 @@ public class UserTest {
 
     // Testing rentItem method in user, testing when user rents more than 10 items
     @Test
-    public void userRentItem_Test3() {
+    public void testUserRentItemMoreThanTen() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -367,7 +361,7 @@ public class UserTest {
     // Testing rentItem method in user, testing when user rents an item with no
     // copies left
     @Test
-    public void userRentItem_Test4() {
+    public void testUserRentItemNull() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -388,9 +382,9 @@ public class UserTest {
         Assert.assertTrue(false == testUser.rentItem(null));
     }
 
-    // Testing rentItem method for amount of copies of an Item (not working rn)
+    // Testing rentItem method for amount of copies of an Item 
     @Test
-    public void userRentItem_Test5() {
+    public void testUserRentItemAmount() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -404,13 +398,6 @@ public class UserTest {
         UserType userType2 = UserType.FACULTY;
         double accountBalance2 = 1000;
         int userID2 = Library.generateNextUserId();
-
-        String name3 = "Bobby Sandiemanie";
-        String email3 = "b.sandie@gmail.com";
-        String password3 = "hihihi123";
-        UserType userType3 = UserType.NON_FACULTY;
-        double accountBalance3 = 1000;
-        int userID3 = Library.generateNextUserId();
 
         Library testLibrary = Library.newInstance();
         Item testItem1 = new Item(0, "Example Book", ItemType.BOOK, LocationType.NORTH_SHELF, 1.00, StatusType.ACTIVE);
@@ -431,13 +418,6 @@ public class UserTest {
                 .accountBalance(accountBalance2)
                 .build();
 
-        User testUser3 = new User.UserBuilder(userID3, name3)
-                .email(email3)
-                .password(password3)
-                .userType(userType3)
-                .accountBalance(accountBalance3)
-                .build();
-
         ArrayList<Item> itemList = testLibrary.getItems();
 
         ArrayList<Item> expectedRented = new ArrayList<>();
@@ -456,7 +436,7 @@ public class UserTest {
 
     // Testing returnItem method for one item
     @Test
-    public void userReturnItem_Test1() {
+    public void testUserReturnItem() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -494,7 +474,7 @@ public class UserTest {
 
     // Testing returnItem/rentItem method for all item types
     @Test
-    public void userReturnItem_Test2() {
+    public void testUserReturnItemAllTypes() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -565,9 +545,9 @@ public class UserTest {
 
     /* Tests for addCourse method */
 
-    // Testing adding course that has already ended
+    //Testing add course to user courses
     @Test
-    public void userAddCourse_Test1() {
+    public void testUserAddCourse() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -601,7 +581,7 @@ public class UserTest {
 
     // Testing null courses added
     @Test
-    public void userAddCourse_Test2() {
+    public void testUserAddCourseNullAdded() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -635,7 +615,7 @@ public class UserTest {
      */
 
     @Test
-    public void userAdd2Balance_Test1() {
+    public void testUserSetAccountBalance_Add2Balance_and_DeductFromBalance_01() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -671,7 +651,7 @@ public class UserTest {
 
     // Testing add2Balance method with decimal places to balance
     @Test
-    public void userAdd2Balance_Test2() {
+    public void testUserSetAccountBalance_Add2Balance_and_DeductFromBalance_02() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -707,7 +687,7 @@ public class UserTest {
     /* Testing addToCart method for user */
 
     @Test
-    public void userAddToCart_Test1() {
+    public void testUserAddToCart_01() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -744,10 +724,8 @@ public class UserTest {
         Assert.assertTrue(expectedCartTotal == testUser.cartTotal);
     }
 
-    /* Testing checkForOverdueItems method for user */
-
     @Test
-    public void userAddToCart_Test2() {
+    public void testUserAddToCart_02() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
@@ -787,15 +765,13 @@ public class UserTest {
     /* Testing string conversion methods for user */
 
     @Test
-    public void userToStringCSVFormatgetAccountType_Test1() {
+    public void testUserToString_CSVFormat_and_GetAccountType() {
         String name = "David Green";
         String email = "d.green@gmail.com";
         String password = "hello123";
         UserType userType = UserType.STUDENT;
         double accountBalance = 0.00;
         int userID = Library.generateNextUserId();
-
-        Library testLibrary = Library.newInstance();
 
         User testUser = new User.UserBuilder(userID, name)
                 .email(email)
