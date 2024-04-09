@@ -1,6 +1,6 @@
 package com.example;
 
-public class Main {
+//public class Main {
 
     // This is for testing purposes. In order to run the actual GUI go to frontend/src/main/java/EECS3311Deliverable2/frontend/Launcher.java and click run.
     //public static void main(String[] args) {
@@ -33,4 +33,4 @@ public class Main {
 
         //CSVReader.writeALL();
     //}
-}
+//}
