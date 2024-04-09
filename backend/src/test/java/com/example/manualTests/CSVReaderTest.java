@@ -27,7 +27,7 @@ import com.example.*;
 
 public class CSVReaderTest {
 
-    public static String fileLocation = "backend" + File.separator + "src" + File.separator + "main" + File.separator
+    public static String fileLocation = "src" + File.separator + "main" + File.separator
             + "resources" + File.separator + "databaseFiles" + File.separator;
 
     
